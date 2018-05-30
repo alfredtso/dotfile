@@ -7,6 +7,7 @@ set nocursorline
 set ttyfast
 set lazyredraw
 set laststatus=2
+set clipboard=unnamed
 " 'matchit.vim' is built-in so let's enable it!
 " Hit '%' on 'if' to jump to 'else'.
 "runtime macros/matchit.vim
@@ -15,13 +16,25 @@ set laststatus=2
 let mapleader=","
 inoremap jk <Esc>`^
 vnoremap jk <Esc>`^ 
-inoremap jj <Esc>`^
-vnoremap jj <Esc>`^ 
+"inoremap jj <Esc>`^
+"vnoremap jj <Esc>`^ 
+
+"Parenthesis mapping
+inoremap <C-j> <Esc>/[)}"'\]>]<CR>:nohl<CR>a
+inoremap ( ()<Esc>:let leavechar=")"<CR>i
+inoremap [ []<Esc>:let leavechar="]"<CR>i
+inoremap { {}<Esc>:let leavechar="]"<CR>i
+inoremap " ""<Esc>:let leavechar="]"<CR>i
+inoremap ' ''<Esc>:let leavechar="]"<CR>i
 
 "inoremap <Tab> <C-P> "tab for autocomplete
-" various settings
+" various setting
+"=====Tab Setting====="
 set autoindent                 " Minimal automatic indenting for any filetype.
+set smartindent					"does the right indent most of the time
+set smarttab
 set tabstop=4             " tab spacing
+set cindent				  "stricter rules for c programs
 set softtabstop=4         " unify
 set shiftwidth=4          " indent/outdent by 4 columns
 set shiftround            " always indent/outdent to the nearest tabstop
@@ -35,13 +48,26 @@ set wildmenu                   " Great command-line completion, use '<Tab>' to
                                " move around and '<CR>' to validate.
 set number		       " show line number
 
-set t_Co=256
-colorscheme desert		"color theme
+"set t_Co=256
+set background=dark
+colorscheme solarized "color theme
 
 set wildmode=longest,list:longest
 set complete=.,b,u,]
 set completeopt=menu,preview	"for built-in complete
 set omnifunc=syntaxcomplete
+
+""""""""""""""""""""""""""""""""""""""""
+"""Python file type""""
+"""""""""""""""""""""""""""""""""""""""
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
 ""Plug ins
 "For fzf
 "set rtp+=~/.fzf
@@ -55,22 +81,26 @@ set omnifunc=syntaxcomplete
 
 "For Vundle
 set nocompatible              " be iMproved, required
-"filetype off                  " required
+filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
+"set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-"Plugin 'VundleVim/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'jez/vim-better-sml'
 "Plugin 'christoomey/vim-tmux-navigator' "for navigating vim split and tmux split
 "Plugin 'Valloric/YouCompleteMe'
-"Plugin 'vim-airline/vim-airline'
-"Plugin 'vim-airline/vim-airline-themes' " airline is the statusbar tool
-"call vundle#end()            " required
-"filetype plugin indent on    " required
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes' " airline is the statusbar tool
+call vundle#end()            " required
+filetype plugin indent on    " required
 
 "Pymode"
 "let g:pymode_python = 'python3'
@@ -81,3 +111,16 @@ set nocompatible              " be iMproved, required
 "nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
 "nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
 "
+"""Airline""""
+let g:airline_theme='base16'
+"""""""""""""""""""""""""""
+""""Syntastic""""
+"""""""""""""""""""""""""""
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
