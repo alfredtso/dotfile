@@ -46,7 +46,7 @@ set ruler                      " Shows the current line number at the bottom.
                                " right of the screen.
 set wildmenu                   " Great command-line completion, use '<Tab>' to
                                " move around and '<CR>' to validate.
-set number		       " show line number
+set number relativenumber		       " show line number
 
 "set t_Co=256
 set background=dark
@@ -82,7 +82,8 @@ au BufNewFile,BufRead *.py
 "For Vundle
 set nocompatible              " be iMproved, required
 filetype off                  " required
-
+"For CtrlP
+set runtimepath^=~/.vim/bundle/ctrlp.vim
 "set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -124,3 +125,9 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+""""""""""""""""""""""""""""
+"""""""CtrlP"""""""""""
+""""""""""""""""""""""""""""
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
