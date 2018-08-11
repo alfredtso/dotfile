@@ -16,10 +16,14 @@ set ignorecase
 set timeoutlen=1000 ttimeoutlen=0
 
 "Key mappings
-let mapleader=" "
+let mapleader=","
 "Open new line below and above the current line"
 nnoremap <leader>o o<esc>
 nnoremap <leader>O O<esc>
+
+nnoremap <space> /
+nnoremap <C-Space> ?
+nmap <C-@> <C-Space>
 
 inoremap jk <Esc>`^
 vnoremap jk <Esc>`^ 
@@ -33,6 +37,11 @@ nnoremap Q @q
 nnoremap ]b :bnext<cr>
 nnoremap [b :bprev<cr>
 
+if has('nvim')
+  tnoremap jk <C-\><C-n>`^
+  tnoremap <M-[> <Esc>
+  tnoremap <C-v><Esc> <Esc>
+endif
 " <F1> | NERD Tree
 nnoremap <F1> :NERDTreeToggle<cr>
 
@@ -42,6 +51,12 @@ if v:version >= 703
   nnoremap <F2> :TagbarToggle<cr>
   let g:tagbar_sort = 0
 endif
+
+"""Window navigation"""
+"nnoremap <C-h> <C-w>h
+"nnoremap <C-j> <C-w>j
+"nnoremap <C-k> <C-w>k
+"nnoremap <C-l> <C-w>l
 
 "Parenthesis mapping
 ""inoremap <C-j> <Esc>/[)}"'\]>]<CR>:nohl<CR>a
@@ -88,14 +103,6 @@ set omnifunc=syntaxcomplete
 """"""""""""""""""""""""""""""""""""""""
 """Python file type""""
 """""""""""""""""""""""""""""""""""""""
-au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
 ""Plug ins
 ""For fzf
 "set rtp+=~/.fzf
