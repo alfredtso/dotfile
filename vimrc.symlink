@@ -45,7 +45,7 @@ endif
 " <F1> | NERD Tree
 nnoremap <F1> :NERDTreeToggle<cr>
 
-" <F11> | Tagbar
+" <F2> | Tagbar
 if v:version >= 703
   inoremap <F2> <esc>:TagbarToggle<cr>
   nnoremap <F2> :TagbarToggle<cr>
@@ -122,6 +122,7 @@ Plug 'zchee/deoplete-jedi'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 Plug 'jez/vim-better-sml'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes' " airline is the statusbar tool
