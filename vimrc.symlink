@@ -3,6 +3,9 @@
 filetype plugin indent on
 filetype plugin on
 syntax on
+" ctags
+set tags=./tags;/
+
 set nocursorline
 set ttyfast
 set lazyredraw
@@ -15,15 +18,34 @@ set ignorecase
 "runtime macros/matchit.vim
 set timeoutlen=1000 ttimeoutlen=0
 
+" Annoying temporary files
+set backupdir=/tmp//,.
+set directory=/tmp//,.
+if v:version >= 703
+  set undodir=/tmp//,.
+endif
+
 "Key mappings
-let mapleader=","
+let mapleader=" "
 "Open new line below and above the current line"
 nnoremap <leader>o o<esc>
 nnoremap <leader>O O<esc>
 
-nnoremap <space> /
-nnoremap <C-Space> ?
-nmap <C-@> <C-Space>
+" Movement in insert mode
+inoremap <C-h> <C-o>h
+inoremap <C-l> <C-o>a
+inoremap <C-j> <C-o>j
+inoremap <C-k> <C-o>k
+inoremap <C-^> <C-o><C-^>
+
+" Save
+inoremap <C-s> <C-O>:update<cr>
+nnoremap <C-s> :update<cr>
+
+" Quit
+inoremap <C-Q> <esc>:q<cr>
+nnoremap <C-Q> :q<cr>
+vnoremap <C-Q> <esc>
 
 inoremap jk <Esc>`^
 vnoremap jk <Esc>`^ 
@@ -32,10 +54,6 @@ nnoremap Y y$
 
 " qq to record, Q to replay
 nnoremap Q @q
-
-"Buffers"
-nnoremap ]b :bnext<cr>
-nnoremap [b :bprev<cr>
 
 if has('nvim')
   tnoremap jk <C-\><C-n>`^
@@ -53,22 +71,39 @@ if v:version >= 703
 endif
 
 """Window navigation"""
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+"nnoremap <C-h> <C-w>h
+"nnoremap <C-j> <C-w>j
+"nnoremap <C-k> <C-w>k
+"nnoremap <C-l> <C-w>l
+" ----------------------------------------------------------------------------
+" Markdown headings
+" ----------------------------------------------------------------------------
+nnoremap <leader>1 m`yypVr=``
+nnoremap <leader>2 m`yypVr-``
+nnoremap <leader>3 m`^i### <esc>``4l
+nnoremap <leader>4 m`^i#### <esc>``5l
+nnoremap <leader>5 m`^i##### <esc>``6l
+" ----------------------------------------------------------------------------
+" Buffers
+" ----------------------------------------------------------------------------
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
 
-"Parenthesis mapping
-""inoremap <C-j> <Esc>/[)}"'\]>]<CR>:nohl<CR>a
-""inoremap ( ()<Esc>:let leavechar=")"<CR>i
-""inoremap [ []<Esc>:let leavechar="]"<CR>i
-""inoremap { {}<Esc>:let leavechar="]"<CR>i
-""inoremap " ""<Esc>:let leavechar="]"<CR>i
-""inoremap ' ''<Esc>:let leavechar="]"<CR>i
-"how many tenths of a seond to blink when matching brackets
+" ----------------------------------------------------------------------------
+" Tabs
+" ----------------------------------------------------------------------------
+nnoremap ]t :tabn<cr>
+nnoremap [t :tabp<cr>
+
+" ----------------------------------------------------------------------------
+" <tab> / <s-tab> | Circular windows navigation
+" ----------------------------------------------------------------------------
+nnoremap <tab>   <c-w>w
+nnoremap <S-tab> <c-w>W
+
+
 set mat=2
 
-"inoremap <Tab> <C-P> "tab for autocomplete
 " various setting
 "=====Tab Setting====="
 set autoindent                 " Minimal automatic indenting for any filetype.
@@ -83,6 +118,7 @@ set backspace=indent,eol,start " Proper backspace behavior.
 set hidden                     " Possibility to have more than one
                                " unsaved buffers.
 set incsearch                  " Incremental search, hit '<CR>' to stop.
+set hlsearch
 set ruler                      " Shows the current line number at the bottom.
                                " right of the screen.
 set wildmenu                   " Great command-line completion, use '<Tab>' to
@@ -95,7 +131,7 @@ set background=dark
 colorscheme solarized "color theme
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-set wildmode=longest,list:longest
+set wildmode=full
 set complete=.,b,u,]
 set completeopt=menu,preview	"for built-in complete
 set omnifunc=syntaxcomplete
@@ -108,18 +144,16 @@ endif
 call plug#begin('~/.vim/plugged')
 
 """""""""""""""""""""""Deoplete"""""""""""""""""""""""
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-jedi'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 Plug 'vim-syntastic/syntastic'
-Plug 'zchee/deoplete-jedi'
+Plug 'junegunn/goyo.vim'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -134,6 +168,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'luochen1990/rainbow'
+Plug 'jpalardy/vim-slime'
+Plug 'wlangstroth/vim-racket'
+"Plug 'Valloric/YouCompleteMe'
 
 """Airline""""
 let g:airline_theme='base16'
@@ -145,14 +182,16 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 1
 
 """""""""""""""""""""""Deoplete"""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 1
-
+let g:python3_host_prog = '/usr/local/opt/python/libexec/bin/python'
+let g:deoplete#custom#source#jedi#show_docstring =1
 """"""""""""""""""""""""""Vim-test""""""""""""""""""""""""""
 " these Ctrl mappings work well when Caps Lock is mapped to Ctrl
 nmap <silent> t<C-n> :TestNearest<CR> " t Ctrl+n
@@ -212,3 +251,16 @@ endif
 
 "Rainbow"
 let g:rainbow_active = 1
+
+"Slime"
+let g:slime_target = "neovim"
+let g:slime_paste_file = "$HOME/.slime_paste"
+
+"YCM
+"let g:ycm_python_interpreter_path = ''
+"let g:ycm_python_sys_path = []
+"let g:ycm_extra_conf_vim_data = [
+"  \  'g:ycm_python_interpreter_path',
+"  \  'g:ycm_python_sys_path'
+"  \]
+"let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
