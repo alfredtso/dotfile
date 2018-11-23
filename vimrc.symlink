@@ -37,6 +37,7 @@ inoremap <C-l> <C-o>a
 inoremap <C-j> <C-o>j
 inoremap <C-k> <C-o>k
 inoremap <C-^> <C-o><C-^>
+"inoremap <C-d> <ESC>ddi
 
 " Save
 inoremap <C-s> <C-O>:update<cr>
@@ -47,8 +48,8 @@ inoremap <C-Q> <esc>:q<cr>
 nnoremap <C-Q> :q<cr>
 vnoremap <C-Q> <esc>
 
-inoremap jk <Esc>`^
-vnoremap jk <Esc>`^ 
+"inoremap jk <Esc>`^
+"vnoremap jk <Esc>`^ 
 " Make y behaves like other capitals
 nnoremap Y y$
 
@@ -147,6 +148,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
+Plug 'arcticicestudio/nord-vim'
 Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 Plug 'vim-syntastic/syntastic'
 Plug 'junegunn/goyo.vim'
@@ -184,9 +186,16 @@ set statusline+=%*
 
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 1
+
+"The option should be set to something like: >
+    let g:syntastic_mode_map = {
+        \ "mode": "passive",
+        \ "active_filetypes": [],
+        \ "passive_filetypes": [] }
+
 
 """""""""""""""""""""""Deoplete"""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 1
@@ -256,6 +265,8 @@ let g:rainbow_active = 1
 let g:slime_target = "neovim"
 let g:slime_paste_file = "$HOME/.slime_paste"
 
+"Tagbar"
+let g:tagbar_autoclose = 1
 "YCM
 "let g:ycm_python_interpreter_path = ''
 "let g:ycm_python_sys_path = []
@@ -264,3 +275,5 @@ let g:slime_paste_file = "$HOME/.slime_paste"
 "  \  'g:ycm_python_sys_path'
 "  \]
 "let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
+"
+nnoremap <expr> <f3> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<c-u>lclose\<cr>" : ":\<c-u>SyntasticCheck\<cr>"
