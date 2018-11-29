@@ -27,6 +27,11 @@ endif
 
 "Key mappings
 let mapleader=" "
+
+" VIMRC
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
 "Open new line below and above the current line"
 nnoremap <leader>o o<esc>
 nnoremap <leader>O O<esc>
@@ -129,7 +134,7 @@ set colorcolumn=80
 "for the columnruler color
 highlight ColorColumn ctermbg=0 guibg=#5f00ff
 set background=dark
-colorscheme solarized "color theme
+colorscheme nord "color theme
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 set wildmode=full
@@ -173,6 +178,7 @@ Plug 'luochen1990/rainbow'
 Plug 'jpalardy/vim-slime'
 Plug 'wlangstroth/vim-racket'
 "Plug 'Valloric/YouCompleteMe'
+Plug 'christoomey/vim-tmux-navigator'
 
 """Airline""""
 let g:airline_theme='base16'
@@ -275,5 +281,15 @@ let g:tagbar_autoclose = 1
 "  \  'g:ycm_python_sys_path'
 "  \]
 "let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
-"
+
+augroup filetype_haskell
+	autocmd!
+	autocmd FileType haskell set softtabstop=2 
+	autocmd FileType haskell set shiftwidth=2 
+	autocmd FileType haskell set smartindent!
+	autocmd FileType haskell set smarttab!
+	autocmd FileType haskell set shiftround!
+	autocmd FileType haskell set autoindent!
+augroup END
+
 nnoremap <expr> <f3> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<c-u>lclose\<cr>" : ":\<c-u>SyntasticCheck\<cr>"
