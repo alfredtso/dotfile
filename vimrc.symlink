@@ -25,6 +25,8 @@ if v:version >= 703
   set undodir=/tmp//,.
 endif
 
+set dictionary+=/usr/share/dict/words
+
 "Key mappings
 let mapleader=" "
 
@@ -68,6 +70,10 @@ if has('nvim')
 endif
 " <F1> | NERD Tree
 nnoremap <F1> :NERDTreeToggle<cr>
+
+" Tags
+nnoremap <C-]> g<C-]>
+nnoremap g[ :pop<cr>
 
 " <F2> | Tagbar
 if v:version >= 703
@@ -222,16 +228,16 @@ else
 endif
 
 """""""""""""""""""""""""""""Fzf"""""""""""""""""""""""""""""
-"nmap <leader><tab> <plug>(fzf-maps-n)
-"xmap <leader><tab> <plug>(fzf-maps-x)
-"omap <leader><tab> <plug>(fzf-maps-o)
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
 " Insert mode completion
-"imap <c-x><c-k> <plug>(fzf-complete-word)
-"imap <c-x><c-f> <plug>(fzf-complete-path)
-"imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-"imap <c-x><c-l> <plug>(fzf-complete-line)
-"nnoremap <silent> <Leader><Leader> :Files<CR>
-"nnoremap <silent> <Leader><Enter>  :Buffers<CR>
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+nnoremap <silent> <Leader><Leader> :FzfFiles<CR>
+nnoremap <silent> <Leader><Enter>  :FzfBuffers<CR>
 " This is the default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
@@ -268,8 +274,9 @@ endif
 let g:rainbow_active = 1
 
 "Slime"
-let g:slime_target = "neovim"
+let g:slime_target = "tmux"
 let g:slime_paste_file = "$HOME/.slime_paste"
+let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.2"}
 
 "Tagbar"
 let g:tagbar_autoclose = 1

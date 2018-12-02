@@ -11,12 +11,15 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export WORKON_HOME=~/Envs
 
-
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
 
+# fzf
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND='fd --type f --type d --hidden --follow --exclude .git'
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -102,6 +105,6 @@ source /usr/local/bin/virtualenvwrapper.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
