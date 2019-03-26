@@ -3,6 +3,10 @@ stty -ixon
 export PATH=/usr/local/opt/python/libexec/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
 # for the ML
 export PATH="$PATH:/usr/local/smlnj/bin"
+
+# for haskell
+export PATH="/Users/alfredtso/.local/bin:$PATH"
+
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 # Path to your oh-my-zsh installation.

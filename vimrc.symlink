@@ -1,10 +1,17 @@
 " Enabling filetype support provides filetype-specific indenting, syntax
 " highlighting, omni-completion and other useful settings.
+
+let s:darwin = has('mac')
+
 filetype plugin indent on
 filetype plugin on
 syntax on
 " ctags
 set tags=./tags;/
+
+"Spellings
+set spelllang=en_gb
+inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 
 set nocursorline
 set ttyfast
@@ -15,7 +22,7 @@ set cmdheight=2
 set ignorecase
 " 'matchit.vim' is built-in so let's enable it!
 " Hit '%' on 'if' to jump to 'else'.
-"runtime macros/matchit.vim
+runtime macros/matchit.vim
 set timeoutlen=1000 ttimeoutlen=0
 
 " Annoying temporary files
@@ -33,6 +40,7 @@ let mapleader=" "
 " VIMRC
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>pv :PlugInstall<cr>
 
 "Open new line below and above the current line"
 nnoremap <leader>o o<esc>
@@ -55,8 +63,8 @@ inoremap <C-Q> <esc>:q<cr>
 nnoremap <C-Q> :q<cr>
 vnoremap <C-Q> <esc>
 
-"inoremap jk <Esc>`^
-"vnoremap jk <Esc>`^ 
+inoremap jk <Esc>`^
+vnoremap jk <Esc>`^ 
 " Make y behaves like other capitals
 nnoremap Y y$
 
@@ -154,22 +162,43 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 call plug#begin('~/.vim/plugged')
+" Color
+Plug 'arcticicestudio/nord-vim'
+Plug 'tomasr/molokai'
+Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'morhetz/gruvbox'
+Plug 'yuttie/hydrangea-vim'
+Plug 'tyrannicaltoucan/vim-deep-space'
+Plug 'AlessandroYorba/Despacio'
+Plug 'cocopon/iceberg.vim'
+Plug 'w0ng/vim-hybrid'
+Plug 'nightsense/snow'
+Plug 'nightsense/stellarized'
+
+" Edit
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-surround'
+
+" Snippet
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+
+" Git
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 
 """""""""""""""""""""""Deoplete"""""""""""""""""""""""
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'arcticicestudio/nord-vim'
+Plug 'w0rp/ale'
 Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 Plug 'vim-syntastic/syntastic'
 Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
 Plug 'jez/vim-better-sml'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes' " airline is the statusbar tool
@@ -185,10 +214,32 @@ Plug 'jpalardy/vim-slime'
 Plug 'wlangstroth/vim-racket'
 "Plug 'Valloric/YouCompleteMe'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'Shougo/neco-vim'
+Plug 'neovimhaskell/haskell-vim'
+"Haskell-IDE
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': './install.sh'
+    \ }
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+let g:LanguageClient_serverCommands = { 'haskell': ['hie-wrapper'] }
+"Haskell-vim"
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+let g:haskell_classic_highlighting = 1
 
 """Airline""""
 let g:airline_theme='base16'
 let g:airline#extensions#tabline#enabled = 1
+
+"Ale
+let g:ale_completion_enabled = 1
+let g:ale_fix_on_save = 1
 """""""""""""""""""""""""""
 """"Syntastic""""
 """""""""""""""""""""""""""
@@ -280,6 +331,49 @@ let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane"
 
 "Tagbar"
 let g:tagbar_autoclose = 1
+
+let g:tagbar_type_haskell = {
+    \ 'ctagsbin'    : 'hasktags',
+    \ 'ctagsargs'   : '-x -c -o-',
+    \ 'kinds'       : [
+        \  'm:modules:0:1',
+        \  'd:data:0:1',
+        \  'd_gadt:data gadt:0:1',
+        \  'nt:newtype:0:1',
+        \  'c:classes:0:1',
+        \  'i:instances:0:1',
+        \  'cons:constructors:0:1',
+        \  'c_gadt:constructor gadt:0:1',
+        \  'c_a:constructor accessors:1:1',
+        \  't:type names:0:1',
+        \  'pt:pattern types:0:1',
+        \  'pi:pattern implementations:0:1',
+        \  'ft:function types:0:1',
+        \  'fi:function implementations:0:1',
+        \  'o:others:0:1'
+    \ ],
+    \ 'sro'          : '.',
+    \ 'kind2scope'   : {
+        \ 'm'        : 'module',
+        \ 'd'        : 'data',
+        \ 'd_gadt'   : 'd_gadt',
+        \ 'c_gadt'   : 'c_gadt',
+        \ 'nt'       : 'newtype',
+        \ 'cons'     : 'cons',
+        \ 'c_a'      : 'accessor',
+        \ 'c'        : 'class',
+        \ 'i'        : 'instance'
+    \ },
+    \ 'scope2kind'   : {
+        \ 'module'   : 'm',
+        \ 'data'     : 'd',
+        \ 'newtype'  : 'nt',
+        \ 'cons'     : 'c_a',
+        \ 'd_gadt'   : 'c_gadt',
+        \ 'class'    : 'ft',
+        \ 'instance' : 'ft'
+    \ }
+\ }
 "YCM
 "let g:ycm_python_interpreter_path = ''
 "let g:ycm_python_sys_path = []
@@ -289,6 +383,17 @@ let g:tagbar_autoclose = 1
 "  \]
 "let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
 
+" Ultisnips
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+
 augroup filetype_haskell
 	autocmd!
 	autocmd FileType haskell set softtabstop=2 
@@ -297,6 +402,76 @@ augroup filetype_haskell
 	autocmd FileType haskell set smarttab!
 	autocmd FileType haskell set shiftround!
 	autocmd FileType haskell set autoindent!
+augroup END
+
+"" ----------------------------------------------------------------------------
+" <F8> | Color scheme selector
+" ----------------------------------------------------------------------------
+function! s:rotate_colors()
+  if !exists('s:colors')
+    let s:colors = s:colors()
+  endif
+  let name = remove(s:colors, 0)
+  call add(s:colors, name)
+  execute 'colorscheme' name
+  redraw
+  echo name
+endfunction
+nnoremap <silent> <F7> :call <SID>rotate_colors()<cr> 
+
+function! s:colors(...)
+  return filter(map(filter(split(globpath(&rtp, 'colors/*.vim'), "\n"),
+        \                  'v:val !~ "^/usr/"'),
+        \           'fnamemodify(v:val, ":t:r")'),
+        \       '!a:0 || stridx(v:val, a:1) >= 0')
+endfunction
+
+function! s:copy_rtf(line1, line2, ...)
+  let [ft, cs, nu] = [&filetype, g:colors_name, &l:nu]
+  let lines = getline(1, '$')
+
+  tab new
+  setlocal buftype=nofile bufhidden=wipe nonumber
+  let &filetype = ft
+  call setline(1, lines)
+  doautocmd BufNewFile filetypedetect
+
+  execute 'colo' get(a:000, 0, 'seoul256-light')
+  hi Normal ctermbg=NONE guibg=NONE
+
+  let lines = getline(a:line1, a:line2)
+  let indent = repeat(' ', min(map(filter(copy(lines), '!empty(v:val)'), 'len(matchstr(v:val, "^ *"))')))
+  call setline(a:line1, map(lines, 'substitute(v:val, indent, "", "")'))
+
+  call tohtml#Convert2HTML(a:line1, a:line2)
+  g/^\(pre\|body\) {/s/background-color: #[0-9]*; //
+  silent %write !textutil -convert rtf -textsizemultiplier 1.3 -stdin -stdout | ruby -e 'puts STDIN.read.sub(/\\\n}$/m, "\n}")' | pbcopy
+
+  bd!
+  tabclose
+
+  let &l:nu = nu
+  execute 'colorscheme' cs
+endfunction
+
+if s:darwin
+  command! -range=% -nargs=? -complete=customlist,s:colors CopyRTF call s:copy_rtf(<line1>, <line2>, <f-args>)
+endif
+
+" ----------------------------------------------------------------------------
+" Help in new tabs
+" ----------------------------------------------------------------------------
+" q to quit
+function! s:helptab()
+  if &buftype == 'help'
+    wincmd T
+    nnoremap <buffer> q :q<cr>
+  endif
+endfunction
+autocmd vimrc BufEnter *.txt call s:helptab()
+
+augroup	vimrc
+	autocmd FileType racket,lisp,clojure,scheme RainbowParentheses
 augroup END
 
 nnoremap <expr> <f3> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<c-u>lclose\<cr>" : ":\<c-u>SyntasticCheck\<cr>"
