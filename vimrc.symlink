@@ -1,43 +1,77 @@
-" Enabling filetype support provides filetype-specific indenting, syntax
-" highlighting, omni-completion and other useful settings.
-
 let s:darwin = has('mac')
+let s:os = substitute(system('uname'), '\n', '', '')
 
+" ===== Basic Setting ===== {{{
+filetype off
 filetype plugin indent on
-filetype plugin on
 syntax on
-" ctags
-set tags=./tags;/
-
-"Spellings
-set spelllang=en_gb
-inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
-
+set mat=2
 set nocursorline
 set ttyfast
 set lazyredraw
 set laststatus=2
-set clipboard=unnamed
+if s:os == 'Darwin'
+	set clipboard=unnamed
+elseif s:os == 'Linux'
+	set clipboard=unnamedplus
+endif
 set cmdheight=2
 set ignorecase
-" 'matchit.vim' is built-in so let's enable it!
-" Hit '%' on 'if' to jump to 'else'.
-runtime macros/matchit.vim
-set timeoutlen=1000 ttimeoutlen=0
+set timeoutlen=500
+set visualbell
+set backspace=indent,eol,start 
+set hidden                     
+set incsearch                  
+set hlsearch
+set ruler                      
+set wildmenu                   
+set wildmode=full
+set number 		       
+set colorcolumn=80								
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+set complete=.,b,u,]
+set completeopt=menuone,preview	"for built-in complete
+set omnifunc=syntaxcomplete
+"set dictionary+=/usr/share/dict/words
 
-" Annoying temporary files
 set backupdir=/tmp//,.
 set directory=/tmp//,.
 if v:version >= 703
   set undodir=/tmp//,.
 endif
 
-set dictionary+=/usr/share/dict/words
+augroup vimrc
+	autocmd!
+augroup END
+
+" ctags
+set tags=./tags;/
+set mouse=a
+
+" }}}}
+
+if has('nvim')
+	let g:node_host_prog= '.nvm/versions/node/v10.15.0/bin/neovim-node-host'
+endif
+
+" ===== Vimscript file settings ===== {{{
+augroup filetype_vim
+	autocmd!
+	autocmd FileType vim setlocal foldmethod=marker
+augroup END
+"}}}
+" ===== MAPPINGS ===== {{{
+" ============================================================================
+
+" ----------------------------------------------------------------------------
+" Basic mappings
+" ----------------------------------------------------------------------------
 
 "Key mappings
 let mapleader=" "
+let maplocalleader =" "
 
-" VIMRC
+" VIMRC 
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>pv :PlugInstall<cr>
@@ -47,11 +81,11 @@ nnoremap <leader>o o<esc>
 nnoremap <leader>O O<esc>
 
 " Movement in insert mode
-inoremap <C-h> <C-o>h
-inoremap <C-l> <C-o>a
-inoremap <C-j> <C-o>j
-inoremap <C-k> <C-o>k
-inoremap <C-^> <C-o><C-^>
+"inoremap <C-h> <C-o>h
+"inoremap <C-l> <C-o>a
+"inoremap <C-j> <C-o>j
+"inoremap <C-k> <C-o>k
+"inoremap <C-^> <C-o><C-^>
 "inoremap <C-d> <ESC>ddi
 
 " Save
@@ -83,6 +117,9 @@ nnoremap <F1> :NERDTreeToggle<cr>
 nnoremap <C-]> g<C-]>
 nnoremap g[ :pop<cr>
 
+" Jump
+nnoremap <C-p> <C-i>
+
 " <F2> | Tagbar
 if v:version >= 703
   inoremap <F2> <esc>:TagbarToggle<cr>
@@ -95,14 +132,6 @@ endif
 "nnoremap <C-j> <C-w>j
 "nnoremap <C-k> <C-w>k
 "nnoremap <C-l> <C-w>l
-" ----------------------------------------------------------------------------
-" Markdown headings
-" ----------------------------------------------------------------------------
-nnoremap <leader>1 m`yypVr=``
-nnoremap <leader>2 m`yypVr-``
-nnoremap <leader>3 m`^i### <esc>``4l
-nnoremap <leader>4 m`^i#### <esc>``5l
-nnoremap <leader>5 m`^i##### <esc>``6l
 " ----------------------------------------------------------------------------
 " Buffers
 " ----------------------------------------------------------------------------
@@ -120,41 +149,28 @@ nnoremap [t :tabp<cr>
 " ----------------------------------------------------------------------------
 nnoremap <tab>   <c-w>w
 nnoremap <S-tab> <c-w>W
+" ----------------------------------------------------------------------------
+" Quickfix
+" ----------------------------------------------------------------------------
+nnoremap ]q :cnext<cr>zz
+nnoremap [q :cprev<cr>zz
+nnoremap ]l :lnext<cr>zz
+nnoremap [l :lprev<cr>zz
+"}}}
 
-
-set mat=2
-
-" various setting
-"=====Tab Setting====="
+" ===== Tab Setting ===== {{{
+set smarttab
+set tabstop=4           
+set softtabstop=4        
+set shiftwidth=4          
+set shiftround            
+" }}}
+"=====Indent Setting====="{{{
 set autoindent                 " Minimal automatic indenting for any filetype.
 set smartindent					"does the right indent most of the time
-set smarttab
-set tabstop=4             " tab spacing
 set cindent				  "stricter rules for c programs
-set softtabstop=4         " unify
-set shiftwidth=4          " indent/outdent by 4 columns
-set shiftround            " always indent/outdent to the nearest tabstop
-set backspace=indent,eol,start " Proper backspace behavior.
-set hidden                     " Possibility to have more than one
-                               " unsaved buffers.
-set incsearch                  " Incremental search, hit '<CR>' to stop.
-set hlsearch
-set ruler                      " Shows the current line number at the bottom.
-                               " right of the screen.
-set wildmenu                   " Great command-line completion, use '<Tab>' to
-                               " move around and '<CR>' to validate.
-set number 		       " show line number
-set colorcolumn=80								
-"for the columnruler color
-highlight ColorColumn ctermbg=0 guibg=#5f00ff
-set background=dark
-colorscheme nord "color theme
+"}}}
 
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-set wildmode=full
-set complete=.,b,u,]
-set completeopt=menu,preview	"for built-in complete
-set omnifunc=syntaxcomplete
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -162,7 +178,12 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 call plug#begin('~/.vim/plugged')
+
 " Color
+" Color{{{ "
+highlight ColorColumn ctermbg=0 guibg=#5f00ff
+set background=dark
+colorscheme gruvbox "color theme
 Plug 'arcticicestudio/nord-vim'
 Plug 'tomasr/molokai'
 Plug 'chriskempson/vim-tomorrow-theme'
@@ -174,36 +195,39 @@ Plug 'cocopon/iceberg.vim'
 Plug 'w0ng/vim-hybrid'
 Plug 'nightsense/snow'
 Plug 'nightsense/stellarized'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes' " airline is the statusbar tool
+" }}} Co "
 
 " Edit
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-surround'
-
-" Snippet
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
+Plug 'tpope/vim-endwise'
+Plug 'junegunn/vim-online-thesaurus'
+Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
+Plug 'junegunn/vim-emoji'
 
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-
-"""""""""""""""""""""""Deoplete"""""""""""""""""""""""
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi'
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'w0rp/ale'
 Plug 'https://github.com/junegunn/vim-github-dashboard.git'
-Plug 'vim-syntastic/syntastic'
+
+" Plugin-Clojure {{{1 "
+" Clojure
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-classpath'
+Plug 'guns/vim-clojure-static'
+Plug 'guns/vim-clojure-highlight'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install() }}
+" 1}}} "
+" Lint
+Plug 'w0rp/ale'
+
 Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'jez/vim-better-sml'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes' " airline is the statusbar tool
 Plug 'janko-m/vim-test'
-Plug 'kassio/neoterm'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -211,73 +235,18 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'luochen1990/rainbow'
 Plug 'jpalardy/vim-slime'
-Plug 'wlangstroth/vim-racket'
-"Plug 'Valloric/YouCompleteMe'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'Shougo/neco-vim'
-Plug 'neovimhaskell/haskell-vim'
-"Haskell-IDE
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': './install.sh'
-    \ }
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-let g:LanguageClient_serverCommands = { 'haskell': ['hie-wrapper'] }
-"Haskell-vim"
-let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
-let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
-let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
-let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
-let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
-let g:haskell_classic_highlighting = 1
 
-"""Airline""""
+"-------------------- Plugin Settings --------------------"
+" Airline {{{1 "
 let g:airline_theme='base16'
 let g:airline#extensions#tabline#enabled = 1
-
-"Ale
+" 1}}} "
+" Ale {{{1 
 let g:ale_completion_enabled = 1
 let g:ale_fix_on_save = 1
-"""""""""""""""""""""""""""
-""""Syntastic""""
-"""""""""""""""""""""""""""
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 1
-
-"The option should be set to something like: >
-    let g:syntastic_mode_map = {
-        \ "mode": "passive",
-        \ "active_filetypes": [],
-        \ "passive_filetypes": [] }
-
-
-"""""""""""""""""""""""Deoplete"""""""""""""""""""""""
-let g:deoplete#enable_at_startup = 1
-let g:python3_host_prog = '/usr/local/opt/python/libexec/bin/python'
-let g:deoplete#custom#source#jedi#show_docstring =1
-""""""""""""""""""""""""""Vim-test""""""""""""""""""""""""""
-" these Ctrl mappings work well when Caps Lock is mapped to Ctrl
-nmap <silent> t<C-n> :TestNearest<CR> " t Ctrl+n
-nmap <silent> t<C-f> :TestFile<CR>    " t Ctrl+f
-nmap <silent> t<C-s> :TestSuite<CR>   " t Ctrl+s
-nmap <silent> t<C-l> :TestLast<CR>    " t Ctrl+l
-nmap <silent> t<C-g> :TestVisit<CR>   " t Ctrl+g
-if has('nvim')
-  let test#strategy = "neoterm"
-  tnoremap <Esc> <C-\><C-n>
-else
-  let test#strategy = "asyncrun"
-endif
-
+" 1}}} "
+" Fzf {{{1 "
 """""""""""""""""""""""""""""Fzf"""""""""""""""""""""""""""""
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
@@ -318,18 +287,17 @@ if has('nvim')
   let g:fzf_layout = { 'window': 'enew' }
   let g:fzf_layout = { 'window': '-tabnew' }
   let g:fzf_layout = { 'window': '10split enew' }
-
 endif
-
-"Rainbow"
+" 1}}} "
+" RainbowParentheses {{{1 "
 let g:rainbow_active = 1
-
-"Slime"
+" 1}}} "
+" Slime {{{1 "
 let g:slime_target = "tmux"
 let g:slime_paste_file = "$HOME/.slime_paste"
 let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.2"}
-
-"Tagbar"
+" 1}}} "
+" Tagbar {{{1 "
 let g:tagbar_autoclose = 1
 
 let g:tagbar_type_haskell = {
@@ -374,39 +342,28 @@ let g:tagbar_type_haskell = {
         \ 'instance' : 'ft'
     \ }
 \ }
-"YCM
-"let g:ycm_python_interpreter_path = ''
-"let g:ycm_python_sys_path = []
-"let g:ycm_extra_conf_vim_data = [
-"  \  'g:ycm_python_interpreter_path',
-"  \  'g:ycm_python_sys_path'
-"  \]
-"let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
+" 1}}} "
+" === Coc === {{{
+" =====
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
 
-" Ultisnips
+imap <C-l> <Plug>(coc-snippets-expand)
+vmap <C-l> <Plug>(coc-snippets-select)
 
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+"}}}
 
-
-augroup filetype_haskell
-	autocmd!
-	autocmd FileType haskell set softtabstop=2 
-	autocmd FileType haskell set shiftwidth=2 
-	autocmd FileType haskell set smartindent!
-	autocmd FileType haskell set smarttab!
-	autocmd FileType haskell set shiftround!
-	autocmd FileType haskell set autoindent!
-augroup END
-
-"" ----------------------------------------------------------------------------
-" <F8> | Color scheme selector
-" ----------------------------------------------------------------------------
+"-------------------- Others --------------------"
+" <F8> | Color scheme selector {{{1 "
 function! s:rotate_colors()
   if !exists('s:colors')
     let s:colors = s:colors()
@@ -457,10 +414,8 @@ endfunction
 if s:darwin
   command! -range=% -nargs=? -complete=customlist,s:colors CopyRTF call s:copy_rtf(<line1>, <line2>, <f-args>)
 endif
-
-" ----------------------------------------------------------------------------
-" Help in new tabs
-" ----------------------------------------------------------------------------
+" 1}}} "
+" Help in new tabs {{{1 "
 " q to quit
 function! s:helptab()
   if &buftype == 'help'
@@ -468,10 +423,37 @@ function! s:helptab()
     nnoremap <buffer> q :q<cr>
   endif
 endfunction
+
 autocmd vimrc BufEnter *.txt call s:helptab()
 
-augroup	vimrc
-	autocmd FileType racket,lisp,clojure,scheme RainbowParentheses
-augroup END
+"autocmd BufEnter *.md :inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+" 1}}} "
 
-nnoremap <expr> <f3> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<c-u>lclose\<cr>" : ":\<c-u>SyntasticCheck\<cr>"
+"-------------------- FileType --------------------"
+"{{{ === Clojure ===
+" -----------------------------------------------------------------------------
+function! s:lisp_maps()
+	nnoremap <buffer> <leader>rq :silent update<bar>Require<cr>
+	nnoremap <buffer> <leader>rQ :silent update<bar>Require!<cr>
+	nnoremap <buffer> <leader>rt :silent update<bar>RunTests<cr>
+endfunction
+
+augroup vimrc
+	"autocmd FileType lisp,clojure,scheme RainbowParentheses
+	autocmd FileType lisp,clojure,scheme call <sid>lisp_maps()
+
+	autocmd FileType clojure xnoremap <buffer> <silent> <cr> "cy:Eval <c-r>c<cr>
+augroup END
+" }}}
+" Haskell FileType {{{1 "
+augroup filetype_haskell
+	autocmd!
+	autocmd FileType haskell set softtabstop=2 
+	autocmd FileType haskell set shiftwidth=2 
+	autocmd FileType haskell set smartindent!
+	autocmd FileType haskell set smarttab!
+	autocmd FileType haskell set shiftround!
+	autocmd FileType haskell set autoindent!
+augroup END
+" }}} "
+

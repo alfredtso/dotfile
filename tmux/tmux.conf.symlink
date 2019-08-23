@@ -96,7 +96,8 @@ bind -Tcopy-mode-vi 'y' send -X copy-pipe-and-cancel "tmux save-buffer - | reatt
 #
 # Buffers to/from Mac clipboard, yay tmux book from pragprog
 bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
-run '~/.tmux/plugins/tpm/tpm'bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer"
+run '~/.tmux/plugins/tpm/tpm'
+bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer"
 
 # For Nested session
 bind -T root F4  \
@@ -116,7 +117,8 @@ bind -T off F4 \
 ##############################
 #set -g @plugin 'seebi/tmux-colors-solarized'
 #set -g @colors-solarized 'dark'
-set -g @plugin 'arcticicestudio/nord-tmux'
+#set -g @plugin 'arcticicestudio/nord-tmux'
+set -g @plugin 'egel/tmux-gruvbox'
 
 ## Prefix-highlight ##
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
