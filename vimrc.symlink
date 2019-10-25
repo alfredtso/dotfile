@@ -207,6 +207,10 @@ Plug 'tpope/vim-endwise'
 Plug 'junegunn/vim-online-thesaurus'
 Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
 Plug 'junegunn/vim-emoji'
+Plug 'honza/vim-snippets'
+
+" Sql
+Plug 'tpope/vim-dadbod'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -350,7 +354,6 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
 
 imap <C-l> <Plug>(coc-snippets-expand)
 vmap <C-l> <Plug>(coc-snippets-select)
@@ -441,9 +444,10 @@ endfunction
 augroup vimrc
 	"autocmd FileType lisp,clojure,scheme RainbowParentheses
 	autocmd FileType lisp,clojure,scheme call <sid>lisp_maps()
-
+	autocmd FileType sql vnoremap <buffer> <Leader>d :DB<CR>
 	autocmd FileType clojure xnoremap <buffer> <silent> <cr> "cy:Eval <c-r>c<cr>
 augroup END
+
 " }}}
 " Haskell FileType {{{1 "
 augroup filetype_haskell
@@ -456,4 +460,11 @@ augroup filetype_haskell
 	autocmd FileType haskell set autoindent!
 augroup END
 " }}} "
+
+" SQL {{{1 "
+augroup filetype_sql
+	au!
+	" this one is which you're most likely to use?
+augroup end
+" 1}}} "
 

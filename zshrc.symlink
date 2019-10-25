@@ -2,7 +2,10 @@ stty -ixon
 # If you come from bash you might have to change your $PATH.
 export PATH=/usr/local/opt/python/libexec/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
 # for the ML
-export PATH="$PATH:/usr/local/smlnj/bin"
+# export PATH="$PATH:/usr/local/smlnj/bin"
+
+# for SQL
+export PATH="/usr/local/opt/postgresql@9.5/bin:$PATH"
 
 # for Google Cloud Platfomr
 export ZONE="asia-southeast1-b"
