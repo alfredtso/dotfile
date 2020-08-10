@@ -241,6 +241,10 @@ Plug 'luochen1990/rainbow'
 Plug 'jpalardy/vim-slime'
 Plug 'christoomey/vim-tmux-navigator'
 
+" Notes taking
+Plug 'vimwiki/vimwiki'
+Plug 'lervag/vimtex'
+
 "-------------------- Plugin Settings --------------------"
 " Airline {{{1 "
 let g:airline_theme='base16'
@@ -297,6 +301,7 @@ endif
 let g:rainbow_active = 1
 " 1}}} "
 " Slime {{{1 "
+let g:slime_no_mappings = 1
 let g:slime_target = "tmux"
 let g:slime_paste_file = "$HOME/.slime_paste"
 let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.2"}
@@ -349,6 +354,7 @@ let g:tagbar_type_haskell = {
 " 1}}} "
 " === Coc === {{{
 " =====
+let g:python3_host_prog = '/usr/local/opt/python/libexec/bin/python'
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -438,7 +444,7 @@ autocmd vimrc BufEnter *.txt call s:helptab()
 function! s:lisp_maps()
 	nnoremap <buffer> <leader>rq :silent update<bar>Require<cr>
 	nnoremap <buffer> <leader>rQ :silent update<bar>Require!<cr>
-	nnoremap <buffer> <leader>rt :silent update<bar>RunTests<cr>
+	nnoremap <buffer> <leader>rt :silent update<bar>RunAllTests<cr>
 endfunction
 
 augroup vimrc

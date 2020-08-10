@@ -11,11 +11,18 @@ export PATH="/usr/local/opt/postgresql@9.5/bin:$PATH"
 export ZONE="asia-southeast1-b"
 export INSTANCE_NAME="instance-1"
 
+# for Java version manage
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
 # for haskell
 export PATH="/Users/alfredtso/.local/bin:$PATH"
 
+
+# color for "ls"
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export LC_ALL=en_US.UTF-8
@@ -89,7 +96,6 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-source /usr/local/bin/virtualenvwrapper.sh
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -118,7 +124,8 @@ source /usr/local/bin/virtualenvwrapper.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias databasedocker="docker run -it -v ~/Coding/DockerFile:/SharedMacOS cs186/environment bash" 
+# alias databasedocker="docker run -it -v ~/Coding/DockerFile:/SharedMacOS cs186/environment bash" 
+alias adobe='open /Applications/Adobe\ Acrobat\ Reader\ DC.app'
 
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
