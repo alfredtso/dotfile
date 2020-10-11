@@ -1,92 +1,29 @@
-let s:darwin = has('mac')
-let s:os = substitute(system('uname'), '\n', '', '')
 
-" ===== Basic Setting ===== {{{
-filetype off
-filetype plugin indent on
-syntax on
-set mat=2
-set nocursorline
-set ttyfast
-set lazyredraw
-set laststatus=2
-if s:os == 'Darwin'
-	set clipboard=unnamed
-elseif s:os == 'Linux'
-	set clipboard=unnamedplus
-endif
-set cmdheight=2
-set ignorecase
-set timeoutlen=500
-set visualbell
-set backspace=indent,eol,start 
-set hidden                     
-set incsearch                  
-set hlsearch
-set ruler                      
-set wildmenu                   
-set wildmode=full
-set number 		       
-set colorcolumn=80								
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-set complete=.,b,u,]
-set completeopt=menuone,preview	"for built-in complete
-set omnifunc=syntaxcomplete
-"set dictionary+=/usr/share/dict/words
-
-set backupdir=/tmp//,.
-set directory=/tmp//,.
-if v:version >= 703
-  set undodir=/tmp//,.
-endif
-
-augroup vimrc
-	autocmd!
-augroup END
-
-" ctags
-set tags=./tags;/
-set mouse=a
-
-" }}}}
-
-if has('nvim')
-	let g:node_host_prog= '.nvm/versions/node/v10.15.0/bin/neovim-node-host'
-endif
-
-" ===== Vimscript file settings ===== {{{
-augroup filetype_vim
-	autocmd!
-	autocmd FileType vim setlocal foldmethod=marker
-augroup END
-"}}}
-" ===== MAPPINGS ===== {{{
 " ============================================================================
 
-" ----------------------------------------------------------------------------
-" Basic mappings
-" ----------------------------------------------------------------------------
-
-"Key mappings
+" Leader {{{ "
 let mapleader=" "
 let maplocalleader =" "
+" }}} Leader "
 
-" VIMRC 
+" About vimrc {{{ "
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>pv :PlugInstall<cr>
+" }}} About vimrc "
 
 "Open new line below and above the current line"
 nnoremap <leader>o o<esc>
 nnoremap <leader>O O<esc>
 
-" Movement in insert mode
+" Movement in insert mode {{{ "
 "inoremap <C-h> <C-o>h
 "inoremap <C-l> <C-o>a
 "inoremap <C-j> <C-o>j
 "inoremap <C-k> <C-o>k
 "inoremap <C-^> <C-o><C-^>
 "inoremap <C-d> <ESC>ddi
+" }}} Movement in insert mode "
 
 " Save
 inoremap <C-s> <C-O>:update<cr>
@@ -99,17 +36,21 @@ vnoremap <C-Q> <esc>
 
 inoremap jk <Esc>`^
 vnoremap jk <Esc>`^ 
+
 " Make y behaves like other capitals
 nnoremap Y y$
 
 " qq to record, Q to replay
 nnoremap Q @q
 
+" TerminalMode {{{ "
 if has('nvim')
   tnoremap jk <C-\><C-n>`^
   tnoremap <M-[> <Esc>
   tnoremap <C-v><Esc> <Esc>
 endif
+" }}} TerminalMode "
+
 " <F1> | NERD Tree
 nnoremap <F1> :NERDTreeToggle<cr>
 
@@ -158,6 +99,11 @@ nnoremap ]l :lnext<cr>zz
 nnoremap [l :lprev<cr>zz
 "}}}
 
+" Settings {{{ "
+set clipboard=unnamed
+set rnu
+" }}} Settings "
+
 " ===== Tab Setting ===== {{{
 set smarttab
 set tabstop=4           
@@ -165,6 +111,7 @@ set softtabstop=4
 set shiftwidth=4          
 set shiftround            
 " }}}
+
 "=====Indent Setting====="{{{
 set autoindent                 " Minimal automatic indenting for any filetype.
 set smartindent					"does the right indent most of the time
@@ -223,7 +170,7 @@ Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-classpath'
 Plug 'guns/vim-clojure-static'
 Plug 'guns/vim-clojure-highlight'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim'", {'branch': 'release'}
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install() }}
 " 1}}} "
 " Lint
@@ -231,19 +178,22 @@ Plug 'w0rp/ale'
 
 Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
-Plug 'janko-m/vim-test'
+"Plug 'janko-m/vim-test'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'luochen1990/rainbow'
-Plug 'jpalardy/vim-slime'
+"Plug 'jpalardy/vim-slime'
 Plug 'christoomey/vim-tmux-navigator'
 
 " Notes taking
-Plug 'vimwiki/vimwiki'
+"Plug 'vimwiki/vimwiki'
 Plug 'lervag/vimtex'
+
+"Color
+"Plug 'ap/vim-css-color'
 
 "-------------------- Plugin Settings --------------------"
 " Airline {{{1 "
@@ -251,7 +201,7 @@ let g:airline_theme='base16'
 let g:airline#extensions#tabline#enabled = 1
 " 1}}} "
 " Ale {{{1 
-let g:ale_completion_enabled = 1
+let g:ale_completion_enabled = 0
 let g:ale_fix_on_save = 1
 " 1}}} "
 " Fzf {{{1 "
@@ -355,6 +305,8 @@ let g:tagbar_type_haskell = {
 " === Coc === {{{
 " =====
 let g:python3_host_prog = '/usr/local/opt/python/libexec/bin/python'
+let g:python2_host_prog = '/usr/local/bin/python2'
+
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -369,7 +321,28 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+function! s:show_documentation()
+    if (index(['vim', 'help'], &filetype) >= 0)
+      execute 'h' expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
 "}}}
+" Vimtex {{{ "
+let g:vimtex_compiler_method = 'latexmk'
+let g:vimtex_view_method = 'zathura'
+" }}} Vimtex "
 
 "-------------------- Others --------------------"
 " <F8> | Color scheme selector {{{1 "
@@ -444,7 +417,7 @@ autocmd vimrc BufEnter *.txt call s:helptab()
 function! s:lisp_maps()
 	nnoremap <buffer> <leader>rq :silent update<bar>Require<cr>
 	nnoremap <buffer> <leader>rQ :silent update<bar>Require!<cr>
-	nnoremap <buffer> <leader>rt :silent update<bar>RunAllTests<cr>
+	nnoremap <buffer> <leader>rt :silent update<bar>RunTests<cr>
 endfunction
 
 augroup vimrc

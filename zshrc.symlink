@@ -1,22 +1,32 @@
 stty -ixon
 # If you come from bash you might have to change your $PATH.
-export PATH=/usr/local/opt/python/libexec/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=/usr/local/opt/python/libexec/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/Cellar/
 # for the ML
 # export PATH="$PATH:/usr/local/smlnj/bin"
 
+# for nvr which is installed in /Users/alfredtso/Library/Python/3.8/bin/
+export PATH="$PATH:/Users/alfredtso/Library/Python/3.8/bin/"
+
+# for latex
+export PATH="$PATH:/Library/TeX/texbin/"
+
 # for SQL
-export PATH="/usr/local/opt/postgresql@9.5/bin:$PATH"
+# export PATH="/usr/local/opt/postgresql@9.5/bin:$PATH"
 
 # for Google Cloud Platfomr
-export ZONE="asia-southeast1-b"
-export INSTANCE_NAME="instance-1"
+# export ZONE="asia-southeast1-b"
+# export INSTANCE_NAME="instance-1"
 
 # for Java version manage
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
 
 # for haskell
-export PATH="/Users/alfredtso/.local/bin:$PATH"
+# export PATH="/Users/alfredtso/.local/bin:$PATH"
+
+# for C-Family LSP 'clangd'
+export PATH="/usr/local/Cellar/llvm/10.0.0_3/bin:$PATH"
+
 
 
 # color for "ls"
@@ -130,6 +140,11 @@ alias adobe='open /Applications/Adobe\ Acrobat\ Reader\ DC.app'
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# fzf completion key
+# export FZF_COMPLETION_TRIGGER=''
+# bindkey '^T' fzf-completion
+# bindkey '^I' fzf-file-widget
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/alfredtso/Downloads/DeepLearning/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/alfredtso/Downloads/DeepLearning/google-cloud-sdk/path.zsh.inc'; fi
