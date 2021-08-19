@@ -28,6 +28,9 @@ eval "$(jenv init -)"
 export PATH="/usr/local/Cellar/llvm/10.0.0_3/bin:$PATH"
 
 
+# Editor
+export EDITOR='nvim'
+export VISUAL='nvim'
 
 # color for "ls"
 export CLICOLOR=1

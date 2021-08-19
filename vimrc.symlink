@@ -6,6 +6,14 @@ let mapleader=" "
 let maplocalleader =" "
 " }}} Leader "
 
+let s:darwin = has('mac')
+
+"MacVim
+if has('gui_running')
+	set guifont=Source\ Code\ Pro\ ExtraLight:h24
+	set linespace=2
+endif
+
 " About vimrc {{{ "
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
@@ -31,7 +39,7 @@ nnoremap <C-s> :update<cr>
 
 " Quit
 inoremap <C-Q> <esc>:q<cr>
-nnoremap <C-Q> :q<cr>
+nnoremap <C-Q> :wq<cr>
 vnoremap <C-Q> <esc>
 
 inoremap jk <Esc>`^
@@ -250,12 +258,7 @@ endif
 " RainbowParentheses {{{1 "
 let g:rainbow_active = 1
 " 1}}} "
-" Slime {{{1 "
-let g:slime_no_mappings = 1
-let g:slime_target = "tmux"
-let g:slime_paste_file = "$HOME/.slime_paste"
-let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.2"}
-" 1}}} "
+
 " Tagbar {{{1 "
 let g:tagbar_autoclose = 1
 
@@ -392,6 +395,7 @@ function! s:copy_rtf(line1, line2, ...)
   let &l:nu = nu
   execute 'colorscheme' cs
 endfunction
+
 
 if s:darwin
   command! -range=% -nargs=? -complete=customlist,s:colors CopyRTF call s:copy_rtf(<line1>, <line2>, <f-args>)
