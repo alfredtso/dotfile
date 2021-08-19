@@ -1,0 +1,90 @@
+{
+  "settingsVersion": "1.66",
+  "exclusionRules": [
+    {
+      "pattern": "https?://repl.it/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://api.codevolve.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://localhost:8080/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.speedcoder.net/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.typingclub.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://docs.google.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://config.qmk.fm/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://app.grammarly.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://madebyevan.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.netflix.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.hk01.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://research-i-04e9cef02b9107614.prd.int.dynoquant.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.keybr.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://research-i-002b58f2a73663892.prd.int.dynoquant.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.typelit.io/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://10.0.0.36:8080/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://10.0.0.36:8080/*",
+      "passKeys": ""
+    }
+  ],
+  "filterLinkHints": false,
+  "waitForEnterForFilteredHints": false,
+  "hideHud": false,
+  "keyMappings": "# Insert your preferred key mappings here.\nunmap d\nunmap u\nmap <c-d> scrollPageDown\nmap <c-u> scrollPageUp",
+  "linkHintCharacters": "qwertasdfgzxcvb",
+  "linkHintNumbers": "0123456789",
+  "newTabUrl": "about:newtab",
+  "nextPatterns": "next,more,newer,>,›,→,»,≫,>>",
+  "previousPatterns": "prev,previous,back,older,<,‹,←,«,≪,<<",
+  "regexFindMode": false,
+  "ignoreKeyboardLayout": false,
+  "scrollStepSize": 60,
+  "smoothScroll": true,
+  "grabBackFocus": false,
+  "searchEngines": "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\ng: https://www.google.com/search?q=%s Google\nso: https://stackoverflow.com/search?q=%s StackOverflow\ngs: https://www.google.com/scholar?q=%s GoogleScholar\nlg: http://gen.lib.rus.ec/search.php?lg_topic=libgen&open=0&view=simple&res=25&phrase=1&column=def&req=%s Library Genesis\ny: https://www.youtube.com/results?search_query=%s Youtube\ngm: https://www.google.com/maps?q=%s Google maps\nd: https://duckduckgo.com/?q=%s DuckDuckGo\naz: https://www.amazon.com/s/?field-keywords=%s Amazon\ndw: https://dictionary.cambridge.org/search/direct/?datasetsearch=english&q=%s Cambridge\nupto: https://www.uptodate.com/contents/search?search=%s&searchType=PLAIN_TEXT&source=USER_INPUT&searchControl=TOP_PULLDOWN&autoComplete=false UpToDate\nca: https://humanum.arts.cuhk.edu.hk/Lexis/lexi-can/search.php?q=%s\n\n# Language Documentation\npy: https://docs.python.org/3/search.html?q=%s&check_keywords=yes&area=default Python Documentation\nc: https://en.cppreference.com/mwiki/index.php?title=Special%3ASearch&search=%s C Reference\nclj: https://clojuredocs.org/search?q=%s ClojureDoc\nj: https://docs.oracle.com/apps/search/search.jsp?q=%s&category=java&book=&folder=&category=&size=&product=&category-aggregated=java&product-aggregated=&role-aggregated=&type-aggregated=&q=%s Java\n\n# Libraries\ns: https://ulrls.summon.serialssolutions.com/search?s.q=%s UoL\nul: https://julac.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,%s&tab=default_tab&search_scope=My%20Institution&vid=HKU&offset=0 HKUL\npl: https://julac.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,%s&tab=default_tab&search_scope=All&vid=HKPU&lang=en_US&offset=0\n\n# Frameworks\npd: https://pandas.pydata.org/pandas-docs/stable/search.html?q=%s Pandas",
+  "searchUrl": "https://www.google.com/search?q=",
+  "userDefinedLinkHintCss": "div > .vimiumHintMarker {\n  /* linkhint boxes */\n  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFF785),\n  color-stop(100%,#FFC542));\n  border: 1px solid #E3BE23;\n}\n\ndiv > .vimiumHintMarker {\n  padding: 2px 3px;\n  background-color: #feda31;\n  border: 0;\n  border-radius: 2px;\n  box-shadow: inset 0 -2px 0 #b39922;\n  background-image: none;\n}\n\ndiv > .vimiumHintMarker span {\n  font-size: 11px;\n  font-weight: bold;\n  text-shadow: none;\n  color: #4a400e;\n}\n\ndiv > .vimiumHintMarker > .matchingCharacter {\n  color: #dcbc2a;\n}\n\ninput#vomnibarInput.vimiumReset {\n\tcolor: #FFF !important;\n  background-color: #111 !important;\n}\n\n#vomnibar {\n   border-color: black;\n   background-color: black;\n}\n\n#vomnibar .vomnibarSearchArea {\n   background-color: #222;\n   border-bottom: #3f3f3f;\n}\n\n#vomnibar input {\n   border-color: #393939;\n}\n\n#vomnibar ul {\n    background-color: #222;\n}\n\n#vomnibar li {\n   border-bottom: #3f3f3f;\n}\n\n#vomnibar li .vomnibarUrl {\n   color: #5287e3;\n}\n\n#vomnibar li .vomnibarMatch {\n   color: white;\n}\n\n#vomnibar li.vomnibarSelected {\n    background-color: #181D24;\n}\n\n#vomnibar li em .vomnibarMatch, #vomnibar li .vomnibarTitle .vomnibarMatch {\n   color: white;\n}\n\n#vomnibar li em, #vomnibar li .vomnibarTitle {\n   color: #ddd;\n}"
+}

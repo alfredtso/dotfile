@@ -4,15 +4,43 @@
 " Leader {{{ "
 let mapleader=" "
 let maplocalleader =" "
+
+" ----------------------------------------------------------------------------
+" <Leader>?/! | Google it / Feeling lucky
+" ----------------------------------------------------------------------------
+function! s:goog(pat, lucky)
+  let q = '"'.substitute(a:pat, '["\n]', ' ', 'g').'"'
+  let q = substitute(q, '[[:punct:] ]',
+       \ '\=printf("%%%02X", char2nr(submatch(0)))', 'g')
+  call system(printf('open "https://www.google.com/search?%sq=%s"',
+                   \ a:lucky ? 'btnI&' : '', q))
+endfunction
+
+nnoremap <leader>? :call <SID>goog(expand("<cWORD>"), 0)<cr>
+nnoremap <leader>! :call <SID>goog(expand("<cWORD>"), 1)<cr>
+xnoremap <leader>? "gy:call <SID>goog(@g, 0)<cr>gv
+xnoremap <leader>! "gy:call <SID>goog(@g, 1)<cr>gv
+
+" ----------------------------------------------------------------------------
+" <leader>ij/py | Open in IntelliJ/PyCharm
+" ----------------------------------------------------------------------------
+if s:darwin
+  nnoremap <silent> <leader>py :call system('nohup "/Applications/PyCharm.app/Contents/MacOS/pycharm" '.expand('%:p').'> /dev/null 2>&1 < /dev/null &')<cr>
+  nnoremap <silent> <leader>ij :call system('nohup "/Applications/IntelliJ IDEA.app/Contents/MacOS/idea" '.expand('%:p').'> /dev/null 2>&1 < /dev/null &')<cr>
+endif
+
 " }}} Leader "
+
 
 let s:darwin = has('mac')
 
 "MacVim
 if has('gui_running')
-	set guifont=Source\ Code\ Pro\ ExtraLight:h24
+	set guifont=Source\ Code\ Pro\ ExtraLight:h20
 	set linespace=2
 endif
+
+"Color
 
 " About vimrc {{{ "
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
@@ -53,7 +81,7 @@ nnoremap Q @q
 
 " TerminalMode {{{ "
 if has('nvim')
-  tnoremap jk <C-\><C-n>`^
+  tnoremap <Esc> <C-\><C-n>`^
   tnoremap <M-[> <Esc>
   tnoremap <C-v><Esc> <Esc>
 endif
@@ -64,7 +92,7 @@ nnoremap <F1> :NERDTreeToggle<cr>
 
 " Tags
 nnoremap <C-]> g<C-]>
-nnoremap g[ :pop<cr>
+nnoremap <C-[> :pop<cr>
 
 " Jump
 nnoremap <C-p> <C-i>
@@ -94,10 +122,13 @@ nnoremap ]t :tabn<cr>
 nnoremap [t :tabp<cr>
 
 " ----------------------------------------------------------------------------
-" <tab> / <s-tab> | Circular windows navigation
+" <tab> / <s-tab> | 
 " ----------------------------------------------------------------------------
-nnoremap <tab>   <c-w>w
-nnoremap <S-tab> <c-w>W
+"Circular windows navigation
+"nnoremap <tab>   <c-w>w
+"nnoremap <S-tab> <c-w>W
+nnoremap <tab> :tabn<cr>
+nnoremap <S-tab> :tabp<cr>
 " ----------------------------------------------------------------------------
 " Quickfix
 " ----------------------------------------------------------------------------
@@ -110,6 +141,13 @@ nnoremap [l :lprev<cr>zz
 " Settings {{{ "
 set clipboard=unnamed
 set rnu
+set hidden
+set ignorecase
+set dictionary+=/usr/share/dict/words
+set noswapfile
+set mouse=a
+set cmdheight=2
+
 " }}} Settings "
 
 " ===== Tab Setting ===== {{{
@@ -126,6 +164,12 @@ set smartindent					"does the right indent most of the time
 set cindent				  "stricter rules for c programs
 "}}}
 
+" ----------------------------------------------------------------------------
+" <leader>ij | Open in IntelliJ
+" ----------------------------------------------------------------------------
+if s:darwin
+  nnoremap <silent> <leader>ij :call system('nohup "/Applications/IntelliJ IDEA.app/Contents/MacOS/idea" '.expand('%:p').'> /dev/null 2>&1 < /dev/null &')<cr>
+endif
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -136,33 +180,32 @@ call plug#begin('~/.vim/plugged')
 
 " Color
 " Color{{{ "
-highlight ColorColumn ctermbg=0 guibg=#5f00ff
-set background=dark
-colorscheme gruvbox "color theme
-Plug 'arcticicestudio/nord-vim'
-Plug 'tomasr/molokai'
-Plug 'chriskempson/vim-tomorrow-theme'
+"Plug 'arcticicestudio/nord-vim'
+"Plug 'tomasr/molokai'
+"Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'morhetz/gruvbox'
-Plug 'yuttie/hydrangea-vim'
-Plug 'tyrannicaltoucan/vim-deep-space'
-Plug 'AlessandroYorba/Despacio'
-Plug 'cocopon/iceberg.vim'
-Plug 'w0ng/vim-hybrid'
-Plug 'nightsense/snow'
-Plug 'nightsense/stellarized'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes' " airline is the statusbar tool
+"Plug 'yuttie/hydrangea-vim'
+"Plug 'tyrannicaltoucan/vim-deep-space'
+"Plug 'AlessandroYorba/Despacio'
+"Plug 'cocopon/iceberg.vim'
+"Plug 'w0ng/vim-hybrid'
+"Plug 'nightsense/snow'
+"Plug 'nightsense/stellarized'
+Plug 'itchyny/lightline.vim'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes' " airline is the statusbar tool
 " }}} Co "
 
 " Edit
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-endwise'
-Plug 'junegunn/vim-online-thesaurus'
+"Plug 'tpope/vim-repeat'
+"Plug 'tpope/vim-obsession'
+"Plug 'tpope/vim-surround'
+"Plug 'tpope/vim-endwise'
+"Plug 'junegunn/vim-online-thesaurus'
 Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
-Plug 'junegunn/vim-emoji'
+"Plug 'junegunn/vim-emoji'
 Plug 'honza/vim-snippets'
+"Plug 'SirVer/ultisnips'
 
 " Sql
 Plug 'tpope/vim-dadbod'
@@ -185,7 +228,7 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install() }}
 Plug 'w0rp/ale'
 
 Plug 'junegunn/goyo.vim'
-Plug 'godlygeek/tabular'
+"Plug 'godlygeek/tabular'
 "Plug 'janko-m/vim-test'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -196,6 +239,10 @@ Plug 'luochen1990/rainbow'
 "Plug 'jpalardy/vim-slime'
 Plug 'christoomey/vim-tmux-navigator'
 
+"LSP
+"Plug 'neovim/nvim-lspconfig'
+"runtime lsp.vim
+
 " Notes taking
 "Plug 'vimwiki/vimwiki'
 Plug 'lervag/vimtex'
@@ -204,6 +251,7 @@ Plug 'lervag/vimtex'
 "Plug 'ap/vim-css-color'
 
 "-------------------- Plugin Settings --------------------"
+
 " Airline {{{1 "
 let g:airline_theme='base16'
 let g:airline#extensions#tabline#enabled = 1
@@ -212,27 +260,68 @@ let g:airline#extensions#tabline#enabled = 1
 let g:ale_completion_enabled = 0
 let g:ale_fix_on_save = 1
 " 1}}} "
+
+" Lightline and Color {{{1 "
+set noshowmode
+let g:lightline = {
+			\ 'colorschme': 'wombat',
+			\ 'component_function': {
+			\	'filename': 'LightlineFilename',
+			\}
+			\}
+
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%')
+endfunction
+
+highlight ColorColumn ctermbg=0 guibg=#5f00ff
+set background=dark
+colorscheme gruvbox "color theme
+
+" Ultisnips
+" My user-defined snippets
+"let g:UltiSnipsSnippetDirectories=".vim/plugged/vim-snippets/snippets/"
+"let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips/"
+"let g:UltiSnipsExpandTrigger="<c-l>"
+"let g:UltiSnipsEditSplit="vertical"
+
 " Fzf {{{1 "
 """""""""""""""""""""""""""""Fzf"""""""""""""""""""""""""""""
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
+"imap <leader><tab> <plug>(fzf-maps-i)
 " Insert mode completion
 imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+inoremap <expr>  <c-x><c-f> fzf#vim#complete#path("rg --files --hidden --follow --glob '!/Library/**' -g '!.git/'")
 imap <c-x><c-l> <plug>(fzf-complete-line)
-nnoremap <silent> <Leader><Leader> :FzfFiles<CR>
-nnoremap <silent> <Leader><Enter>  :FzfBuffers<CR>
+
+"" Custom completion
+"inoremap <expr> <c-x><c-t> fzf#vim#complete('cat ~/Documents/Notes/Garden/tags')
+"" Search stuff 
+nnoremap <silent> <Leader>ag       :Ag <C-R><C-W><CR>
+nnoremap <silent> <Leader>AG       :Ag <C-R><C-A><CR>
+nnoremap <silent> <Leader><Leader> :Files<CR>
+nnoremap <silent> <Leader><Enter>  :Buffers<CR>
+nnoremap <silent> <Leader>L        :Lines<CR>
+
+"nnoremap <silent> <expr> <Leader><Leader> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+"nnoremap <silent> <Leader>fs :Snippets<CR>
 " This is the default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
-let g:fzf_command_prefix = 'Fzf'
+let g:fzf_command_prefix = ''
 " Default fzf layout
 " - down / up / left / right
 let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_tags_command = 'ctags -R'
 
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -254,6 +343,27 @@ if has('nvim')
   let g:fzf_layout = { 'window': '-tabnew' }
   let g:fzf_layout = { 'window': '10split enew' }
 endif
+
+function! s:fzf_statusline()
+  " Override statusline as you like
+  highlight fzf1 ctermfg=161 ctermbg=251
+  highlight fzf2 ctermfg=23 ctermbg=251
+  highlight fzf3 ctermfg=237 ctermbg=251
+  setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
+endfunction
+
+"autocmd! User FzfStatusLine call <SID>fzf_statusline()
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
 " 1}}} "
 " RainbowParentheses {{{1 "
 let g:rainbow_active = 1
@@ -307,41 +417,147 @@ let g:tagbar_type_haskell = {
 " 1}}} "
 " === Coc === {{{
 " =====
-let g:python3_host_prog = '/usr/local/opt/python/libexec/bin/python'
-let g:python2_host_prog = '/usr/local/bin/python2'
+" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
+" unicode characters in the file autoload/float.vim
+set encoding=utf-8
 
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("nvim-0.5.0") || has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-imap <C-l> <Plug>(coc-snippets-expand)
-vmap <C-l> <Plug>(coc-snippets-select)
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-function! s:show_documentation()
-    if (index(['vim', 'help'], &filetype) >= 0)
-      execute 'h' expand('<cword>')
-    else
-      call CocAction('doHover')
-    endif
-  endfunction
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
+if s:darwin
+	let g:python3_host_prog = '/usr/local/bin/python3'
+	let g:python2_host_prog = '/usr/bin/python'
+else
+	let g:python3_host_prog = '/usr/bin/python'
+	let g:python2_host_prog = '/usr/bin/python2'
+endif
+
+" Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+"" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>ca  :<C-u>CocList diagnostics<cr>
+
+" Manage extensions.
+"nnoremap <silent><nowait> <space>ce  :<C-u>CocList extensions<cr>
+
+" Show commands.
+nnoremap <silent><nowait> <space>cc  :<C-u>CocList commands<cr>
+
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>co  :<C-u>CocList outline<cr>
+
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>cs  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>cj  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>ck  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>cp  :<C-u>CocListResume<CR>
 
 "}}}
+
 " Vimtex {{{ "
 let g:vimtex_compiler_method = 'latexmk'
 let g:vimtex_view_method = 'zathura'
@@ -406,7 +622,7 @@ endif
 function! s:helptab()
   if &buftype == 'help'
     wincmd T
-    nnoremap <buffer> q :q<cr>
+    nnoremap <buffer> <ESC> :q<cr>
   endif
 endfunction
 
@@ -450,4 +666,5 @@ augroup filetype_sql
 	" this one is which you're most likely to use?
 augroup end
 " 1}}} "
+
 
