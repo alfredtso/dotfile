@@ -1,5 +1,6 @@
 
 " ============================================================================
+let s:darwin = has('mac')
 
 " Leader {{{ "
 let mapleader=" "
@@ -32,7 +33,6 @@ endif
 " }}} Leader "
 
 
-let s:darwin = has('mac')
 
 "MacVim
 if has('gui_running')
@@ -136,6 +136,7 @@ nnoremap ]q :cnext<cr>zz
 nnoremap [q :cprev<cr>zz
 nnoremap ]l :lnext<cr>zz
 nnoremap [l :lprev<cr>zz
+nnoremap <leader>c :cclose<bar>lclose<cr>
 "}}}
 
 " Settings {{{ "
@@ -180,20 +181,7 @@ call plug#begin('~/.vim/plugged')
 
 " Color
 " Color{{{ "
-"Plug 'arcticicestudio/nord-vim'
-"Plug 'tomasr/molokai'
-"Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'morhetz/gruvbox'
-"Plug 'yuttie/hydrangea-vim'
-"Plug 'tyrannicaltoucan/vim-deep-space'
-"Plug 'AlessandroYorba/Despacio'
-"Plug 'cocopon/iceberg.vim'
-"Plug 'w0ng/vim-hybrid'
-"Plug 'nightsense/snow'
-"Plug 'nightsense/stellarized'
-Plug 'itchyny/lightline.vim'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes' " airline is the statusbar tool
 " }}} Co "
 
 " Edit
@@ -214,6 +202,7 @@ Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+Plug 'junegunn/gv.vim'
 
 " Plugin-Clojure {{{1 "
 " Clojure
@@ -235,7 +224,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-Plug 'luochen1990/rainbow'
+"Plug 'luochen1990/rainbow'
 "Plug 'jpalardy/vim-slime'
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -244,44 +233,41 @@ Plug 'christoomey/vim-tmux-navigator'
 "runtime lsp.vim
 
 " Notes taking
-"Plug 'vimwiki/vimwiki'
 Plug 'lervag/vimtex'
 
 "Color
 "Plug 'ap/vim-css-color'
 
+"Easy Motion
+Plug 'easymotion/vim-easymotion'
+	let g:EasyMotion_do_mapping = 0 " Disable default mappings
+	let g:EasyMotion_smartcase = 1
+
+	" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+	" `s{char}{label}`
+	nmap <leader>f <Plug>(easymotion-overwin-f)
+
 "-------------------- Plugin Settings --------------------"
-
-" Airline {{{1 "
-let g:airline_theme='base16'
-let g:airline#extensions#tabline#enabled = 1
-" 1}}} "
-" Ale {{{1 
-let g:ale_completion_enabled = 0
-let g:ale_fix_on_save = 1
-" 1}}} "
-
-" Lightline and Color {{{1 "
+set termguicolors
 set noshowmode
-let g:lightline = {
-			\ 'colorschme': 'wombat',
-			\ 'component_function': {
-			\	'filename': 'LightlineFilename',
-			\}
-			\}
-
-function! LightlineFilename()
-  let root = fnamemodify(get(b:, 'git_dir'), ':h')
-  let path = expand('%:p')
-  if path[:len(root)-1] ==# root
-    return path[len(root)+1:]
-  endif
-  return expand('%')
-endfunction
-
 highlight ColorColumn ctermbg=0 guibg=#5f00ff
+let g:gruvbox_italic=1
 set background=dark
 colorscheme gruvbox "color theme
+
+" Statusline
+function! s:statusline_expr()
+  let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+  let ro  = "%{&readonly ? '[RO] ' : ''}"
+  let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+  let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+  let sep = ' %= '
+  let pos = ' %-12(%l : %c%V%) '
+  let pct = ' %P'
+
+  return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+endfunction
+let &statusline = s:statusline_expr()
 
 " Ultisnips
 " My user-defined snippets
@@ -304,8 +290,8 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 "" Custom completion
 "inoremap <expr> <c-x><c-t> fzf#vim#complete('cat ~/Documents/Notes/Garden/tags')
 "" Search stuff 
-nnoremap <silent> <Leader>ag       :Ag <C-R><C-W><CR>
-nnoremap <silent> <Leader>AG       :Ag <C-R><C-A><CR>
+nnoremap <silent> <Leader>rg       :Rg <CR>
+nnoremap <silent> <Leader>RG       :RG <CR>
 nnoremap <silent> <Leader><Leader> :Files<CR>
 nnoremap <silent> <Leader><Enter>  :Buffers<CR>
 nnoremap <silent> <Leader>L        :Lines<CR>
@@ -456,17 +442,20 @@ inoremap <silent><expr> <TAB>
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
 
 if s:darwin
-	let g:python3_host_prog = '/usr/local/bin/python3'
-	let g:python2_host_prog = '/usr/bin/python'
+    let g:loaded_python_provider = 0
+	let g:python3_host_prog = '~/.pyenv/shims/python'
 else
 	let g:python3_host_prog = '/usr/bin/python'
 	let g:python2_host_prog = '/usr/bin/python2'
@@ -499,7 +488,7 @@ nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!

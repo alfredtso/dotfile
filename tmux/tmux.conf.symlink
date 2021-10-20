@@ -6,6 +6,10 @@ set-option -g focus-events on
 # try clipboard
 set-option -g set-clipboard on
 
+# Color
+set-option -sa terminal-overrides ',tmux-256color:RGB'
+#set -as terminal-overrides ",xterm-256*:Tc"
+
 # Default 2000
 set -as terminal-features ',tmux-256color:clipboard'
 set -g history-limit 2000
@@ -14,7 +18,7 @@ set -g display-time 4000
 set -sg escape-time 0
 set -g base-index 1
 set -g pane-base-index 1
-set -g default-terminal "screen-256color"
+set -g default-terminal "tmux-256color"
 set -g mode-keys vi
 set -g status-keys vi
 set -g mouse on
@@ -32,7 +36,7 @@ set -g prefix C-a
 bind C-a send-prefix
 
 # reload
-bind R source-file '~/.tmux.conf' 
+bind R source-file '/Users/alfredtso/.tmux.conf'; display "Reloaded config" 
 
 # Split window
 bind | split-window -h -c "#{pane_current_path}"
@@ -51,5 +55,6 @@ bind l select-pane -R
 # Plug-in
 set -g @plugin 'egel/tmux-gruvbox'
 set -g @plugin 'tmux-plugins/tmux-urlview'
+set -g @plugin 'christoomey/vim-tmux-navigator'
 set -g @urlview-key 'u'
 run '~/.tmux/plugins/tpm/tpm'
