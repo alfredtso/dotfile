@@ -45,8 +45,8 @@ export PATH="/usr/local/Cellar/llvm/10.0.0_3/bin:$PATH"
 
 
 # Editor
-export EDITOR='nvim'
-export VISUAL='nvim'
+export EDITOR='vim'
+export VISUAL='vim'
 
 # color for "ls"
 export CLICOLOR=1
@@ -61,7 +61,7 @@ export WORKON_HOME=~/Envs
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
+ZSH_THEME="robbyrussell"
 
 # fzf
 export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!/Library/**' -g '!.git/'"
@@ -169,8 +169,8 @@ alias ls='nnn -de'
 #NNN_PLUG="$NNN_PLUG_PERSONAL;$NNN_PLUG_WORK;$NNN_PLUG_DEFAULT;$NNN_PLUG_INLINE"
 #export NNN_PLUG
 export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='p:preview-tui;o:fzz;b:bookmarks'
-export NNN_BMS='d:~/Documents;D:~/Downloads;s:/Volumes/SSD;S:/Volumes/SSD/DownloadsSSD;g:~/Documents/Notes/Garden;h:~/'
+export NNN_PLUG='e:!vim -u NONE $nnn;p:preview-tui;o:fzz;b:bookmarks'
+export NNN_BMS='d:~/Documents;D:~/Downloads;s:/'
 [ -f ~/.config/nnn/quitcd.bash_zsh ] && source ~/.config/nnn/quitcd.bash_zsh
 
 bindkey -v
