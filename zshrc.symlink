@@ -154,6 +154,7 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
+alias cht='cht.sh'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # alias databasedocker="docker run -it -v ~/Coding/DockerFile:/SharedMacOS cs186/environment bash" 
@@ -169,14 +170,16 @@ alias ls='nnn -de'
 #NNN_PLUG="$NNN_PLUG_PERSONAL;$NNN_PLUG_WORK;$NNN_PLUG_DEFAULT;$NNN_PLUG_INLINE"
 #export NNN_PLUG
 export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='e:!vim -u NONE $nnn;p:preview-tui;o:fzz;b:bookmarks'
-export NNN_BMS='d:~/Documents;D:~/Downloads;s:/'
+export NNN_PLUG='e:!vim -u NONE $nnn*;s:-!sudo -E vim -u NONE $nnn*;p:preview-tui;o:fzz;b:bookmarks'
+export NNN_BMS='d:~/Documents;D:~/Downloads;s:/;h:~/'
 [ -f ~/.config/nnn/quitcd.bash_zsh ] && source ~/.config/nnn/quitcd.bash_zsh
 
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-bindkey -r '^G'
+
+# remove Ctrl-G binding
+#bindkey -r '^G'
 
 # fzf completion key
 # export FZF_COMPLETION_TRIGGER=''
