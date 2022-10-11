@@ -13,7 +13,7 @@ function! s:goog(pat, lucky)
   let q = '"'.substitute(a:pat, '["\n]', ' ', 'g').'"'
   let q = substitute(q, '[[:punct:] ]',
        \ '\=printf("%%%02X", char2nr(submatch(0)))', 'g')
-  call system(printf('open "https://www.google.com/search?%sq=%s"',
+  call system(printf('xdg-open "https://www.google.com/search?%sq=%s"',
                    \ a:lucky ? 'btnI&' : '', q))
 endfunction
 
@@ -43,7 +43,7 @@ endif
 "Color
 
 " About vimrc {{{ "
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>ev :vsplit ~/.vimrc<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>pv :PlugInstall<cr>
 " }}} About vimrc "
@@ -140,7 +140,11 @@ nnoremap <leader>c :cclose<bar>lclose<cr>
 "}}}
 
 " Settings {{{ "
-set clipboard=unnamed
+if s:darwin
+	set clipboard=unnamed
+else
+	set clipboard=unnamedplus
+endif
 set rnu
 set hidden
 set ignorecase
@@ -185,18 +189,20 @@ Plug 'morhetz/gruvbox'
 " }}} Co "
 
 " Edit
+Plug 'yggdroot/indentline'
 "Plug 'tpope/vim-repeat'
 "Plug 'tpope/vim-obsession'
 "Plug 'tpope/vim-surround'
 "Plug 'tpope/vim-endwise'
 "Plug 'junegunn/vim-online-thesaurus'
 Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
-"Plug 'junegunn/vim-emoji'
+Plug 'junegunn/vim-emoji'
 Plug 'honza/vim-snippets'
 "Plug 'SirVer/ultisnips'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Sql
-Plug 'tpope/vim-dadbod'
+"Plug 'tpope/vim-dadbod'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -206,10 +212,10 @@ Plug 'junegunn/gv.vim'
 
 " Plugin-Clojure {{{1 "
 " Clojure
-Plug 'tpope/vim-fireplace'
-Plug 'tpope/vim-classpath'
-Plug 'guns/vim-clojure-static'
-Plug 'guns/vim-clojure-highlight'
+"Plug 'tpope/vim-fireplace'
+"Plug 'tpope/vim-classpath'
+"Plug 'guns/vim-clojure-static'
+"Plug 'guns/vim-clojure-highlight'
 "Plug 'neoclide/coc.nvim'", {'branch': 'release'}
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install() }}
 " 1}}} "
@@ -217,6 +223,7 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install() }}
 Plug 'w0rp/ale'
 
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/vim-easy-align'
 "Plug 'godlygeek/tabular'
 "Plug 'janko-m/vim-test'
 Plug '/usr/local/opt/fzf'
@@ -233,7 +240,7 @@ Plug 'christoomey/vim-tmux-navigator'
 "runtime lsp.vim
 
 " Notes taking
-Plug 'lervag/vimtex'
+"Plug 'lervag/vimtex'
 
 "Color
 "Plug 'ap/vim-css-color'
@@ -269,6 +276,10 @@ function! s:statusline_expr()
 endfunction
 let &statusline = s:statusline_expr()
 
+"EasyAlign
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
 " Ultisnips
 " My user-defined snippets
 "let g:UltiSnipsSnippetDirectories=".vim/plugged/vim-snippets/snippets/"
@@ -287,6 +298,7 @@ imap <c-x><c-k> <plug>(fzf-complete-word)
 inoremap <expr>  <c-x><c-f> fzf#vim#complete#path("rg --files --hidden --follow --glob '!/Library/**' -g '!.git/'")
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
+nnoremap <silent> <Leader>em       :%s/:\([^:]\+\):/\=emoji#for(submatch(1), submatch(0))/g<CR>
 "" Custom completion
 "inoremap <expr> <c-x><c-t> fzf#vim#complete('cat ~/Documents/Notes/Garden/tags')
 "" Search stuff 
@@ -457,8 +469,8 @@ if s:darwin
     let g:loaded_python_provider = 0
 	let g:python3_host_prog = '~/.pyenv/shims/python'
 else
-	let g:python3_host_prog = '/usr/bin/python'
-	let g:python2_host_prog = '/usr/bin/python2'
+	let g:python3_host_prog = '/usr/bin/python3'
+	let g:python2_host_prog = '/usr/bin/python'
 endif
 
 " Use K to show documentation in preview window.

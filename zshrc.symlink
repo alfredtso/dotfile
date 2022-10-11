@@ -2,7 +2,13 @@ stty -ixon
 # If you come from bash you might have to change your $PATH.
 
 ### PATHS !
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/Cellar/
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin/
+
+### for go 
+export PATH=$PATH:/usr/local/go/bin
+
+# for openssl "libssl.so.1.1"
+export LD_LIBRARY_PATH="/usr/local/lib64:$LD_LIBRARY_PATH"
 
 # for the ML
 # export PATH="$PATH:/usr/local/smlnj/bin"
@@ -12,20 +18,14 @@ export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
 
 # for latex
-export PATH="$PATH:/Library/TeX/texbin/"
+#export PATH="$PATH:/Library/TeX/texbin/"
 
 # Rustup
-export PATH="$HOME/.cargo/bin/:$PATH"
+#export PATH="$HOME/.cargo/bin/:$PATH"
 
 # for pgenv
 # export PATH=$PATH:~/Github/pgenv/pgsql/bin
 export PGDATA='/usr/local/var/postgres'
-
-# for pyenv
-eval "$(pyenv init --path)"
-
-# for pyenv-virtualenv
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 # for git gpg sign
 export GPG_TTY=$(tty)
@@ -41,7 +41,7 @@ export GPG_TTY=$(tty)
 # export PATH="/Users/alfredtso/.local/bin:$PATH"
 
 # for C-Family LSP 'clangd'
-export PATH="/usr/local/Cellar/llvm/10.0.0_3/bin:$PATH"
+#export PATH="/usr/local/Cellar/llvm/10.0.0_3/bin:$PATH"
 
 
 # Editor
@@ -61,7 +61,7 @@ export WORKON_HOME=~/Envs
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 
 # fzf
 export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!/Library/**' -g '!.git/'"
@@ -125,6 +125,7 @@ HIST_STAMPS="mm/dd/yyyy"
 plugins=(
   git
   docker docker-compose
+  aws
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -147,6 +148,7 @@ source $ZSH/oh-my-zsh.sh
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -155,6 +157,11 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases
 alias cht='cht.sh'
+alias nvim='~/Downloads/nvim.appimage'
+alias datagrip='nohup ~/.local/DataGrip-2021.3.3/bin/datagrip.sh >/dev/null 2>&1'
+alias rga='~/.cargo/bin/rga'
+alias aws=/usr/local/bin/aws
+alias bat='bat --theme=gruvbox-dark -p'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # alias databasedocker="docker run -it -v ~/Coding/DockerFile:/SharedMacOS cs186/environment bash" 
@@ -162,7 +169,7 @@ alias cht='cht.sh'
 # alias okular='/usr/local/Cellar/okular/20.04.2_1/bin/okular.app' 
 
 ## nnn
-alias ls='nnn -de'
+alias lsn='nnn -dea'
 #NNN_PLUG_PERSONAL='g:personal/convert2zoom;p:personal/echo'
 #NNN_PLUG_WORK='j:work/prettyjson;d:work/foobar'
 #NNN_PLUG_INLINE='e:_go run $nnn*'
@@ -187,7 +194,7 @@ bindkey -M viins 'jk' vi-cmd-mode
 # bindkey '^I' fzf-file-widget
 
 # z
-[ -f ~/dotfiles/z.sh ] && source ~/dotfiles/z.sh
+[ -f ~/dotfile/z.sh ] && source ~/dotfile/z.sh
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
@@ -196,4 +203,22 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="/home/alfredtso/.local/bin:$PATH"
+#export PATH="$HOME/.poetry/bin:$PATH"
+# for pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
+# for pyenv-virtualenv
+eval "$(pyenv virtualenv-init -)"
+
+fcat() { cat $@ | sed 's/'`echo "\001"`'/|/g' }
+orderapp() { source ~/.orderapp.sh }
+hkbbg() { xvnc4viewer 192.168.150.180 -passwd ~/.vnc/passwd }
+newld() { xvnc4viewer 192.168.50.180 }
+oldbbg() { xvnc4viewer 192.168.124.180 -passwd ~/.vnc/passwd }
+newbbg() { xvnc4viewer 192.168.124.181 -passwd ~/.vnc/passwd }
+ips() { bat /etc/hosts }
+
