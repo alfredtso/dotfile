@@ -8,14 +8,14 @@ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin/
 export PATH=$PATH:/usr/local/go/bin
 
 # for openssl "libssl.so.1.1"
-export LD_LIBRARY_PATH="/usr/local/lib64:$LD_LIBRARY_PATH"
+#export LD_LIBRARY_PATH="/usr/local/lib64:$LD_LIBRARY_PATH"
 
 # for the ML
 # export PATH="$PATH:/usr/local/smlnj/bin"
 
 # for Jenv
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+#export PATH="$HOME/.jenv/bin:$PATH"
+#eval "$(jenv init -)"
 
 # for latex
 #export PATH="$PATH:/Library/TeX/texbin/"
@@ -35,7 +35,7 @@ export GPG_TTY=$(tty)
 # export INSTANCE_NAME="instance-1"
 
 # for Java version manage
-# export PATH="$HOME/.jenv/bin:$PATH"
+## export PATH="$HOME/.jenv/bin:$PATH"
 
 # for haskell
 # export PATH="/Users/alfredtso/.local/bin:$PATH"
@@ -45,8 +45,8 @@ export GPG_TTY=$(tty)
 
 
 # Editor
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='nvim -u NONE'
+export VISUAL='nvim -u NONE'
 
 # color for "ls"
 export CLICOLOR=1
@@ -157,7 +157,6 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 #
 # Example aliases
 alias cht='cht.sh'
-alias nvim='~/Downloads/nvim.appimage'
 alias datagrip='nohup ~/.local/DataGrip-2021.3.3/bin/datagrip.sh >/dev/null 2>&1'
 alias rga='~/.cargo/bin/rga'
 alias aws=/usr/local/bin/aws
@@ -214,11 +213,16 @@ eval "$(pyenv init -)"
 # for pyenv-virtualenv
 eval "$(pyenv virtualenv-init -)"
 
-fcat() { cat $@ | sed 's/'`echo "\001"`'/|/g' }
-orderapp() { source ~/.orderapp.sh }
-hkbbg() { xvnc4viewer 192.168.150.180 -passwd ~/.vnc/passwd }
-newld() { xvnc4viewer 192.168.50.180 }
-oldbbg() { xvnc4viewer 192.168.124.180 -passwd ~/.vnc/passwd }
-newbbg() { xvnc4viewer 192.168.124.181 -passwd ~/.vnc/passwd }
-ips() { bat /etc/hosts }
+# for ansible autocomplete
+autoload -U bashcompinit
+bashcompinit
 
+eval $(register-python-argcomplete ansible)
+eval $(register-python-argcomplete ansible-config)
+eval $(register-python-argcomplete ansible-console)
+eval $(register-python-argcomplete ansible-doc)
+eval $(register-python-argcomplete ansible-galaxy)
+eval $(register-python-argcomplete ansible-inventory)
+eval $(register-python-argcomplete ansible-playbook)
+eval $(register-python-argcomplete ansible-pull)
+eval $(register-python-argcomplete ansible-vault)
