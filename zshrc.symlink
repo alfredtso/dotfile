@@ -21,7 +21,7 @@ export PATH=$PATH:/usr/local/go/bin
 #export PATH="$PATH:/Library/TeX/texbin/"
 
 # Rustup
-#export PATH="$HOME/.cargo/bin/:$PATH"
+export PATH="$HOME/.cargo/bin/:$PATH"
 
 # for pgenv
 # export PATH=$PATH:~/Github/pgenv/pgsql/bin
@@ -214,15 +214,15 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 # for ansible autocomplete
-autoload -U bashcompinit
-bashcompinit
-
-eval $(register-python-argcomplete ansible)
-eval $(register-python-argcomplete ansible-config)
-eval $(register-python-argcomplete ansible-console)
-eval $(register-python-argcomplete ansible-doc)
-eval $(register-python-argcomplete ansible-galaxy)
-eval $(register-python-argcomplete ansible-inventory)
-eval $(register-python-argcomplete ansible-playbook)
-eval $(register-python-argcomplete ansible-pull)
-eval $(register-python-argcomplete ansible-vault)
+#autoload -U bashcompinit
+#bashcompinit
+#
+#eval $(register-python-argcomplete ansible)
+#eval $(register-python-argcomplete ansible-config)
+#eval $(register-python-argcomplete ansible-console)
+#eval $(register-python-argcomplete ansible-doc)
+#eval $(register-python-argcomplete ansible-galaxy)
+#eval $(register-python-argcomplete ansible-inventory)
+#eval $(register-python-argcomplete ansible-playbook)
+#eval $(register-python-argcomplete ansible-pull)
+#eval $(register-python-argcomplete ansible-vault)

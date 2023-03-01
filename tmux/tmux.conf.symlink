@@ -36,7 +36,7 @@ set -g prefix C-a
 bind C-a send-prefix
 
 # reload
-bind R source-file '/home/alfredtso/.tmux.conf'; display "Reloaded config" 
+bind R source-file '/home/alfred/.tmux.conf'; display "Reloaded config" 
 
 # Split window
 #bind | split-window -h -c "#{pane_current_path}"
@@ -64,4 +64,5 @@ set -g @plugin 'tmux-plugins/tmux-continuum'
 
 set -g @urlview-key 'u'
 set -g @continuum-restore 'on'
+run-shell ~/.tmux/plugins/tmux-urlview/urlview.tmux
 run '~/.tmux/plugins/tpm/tpm'
