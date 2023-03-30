@@ -1,0 +1,17 @@
+super + alt + shift + control + d
+	rofi -show window
+
+super + alt + shift + control + e
+	xeyes
+
+# Reload sxhkdrc
+super + shift + r
+	pkill -usr1 -x sxhkd; notify-send 'sxhkd' 'Reloaded config'
+
+# Run shell commands
+super + alt + shift + control + r
+	rofi -show drun -run-shell-command 'alacritty -e zsh -c "\{cmd\}"'
+
+# Screencapture
+super + alt + shift + control + @p
+	notify-send 'testing'; scrot -s -e 'xclip -selection clipboard -target image/png -i $f'

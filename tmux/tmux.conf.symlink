@@ -2,6 +2,8 @@
 set-option -g focus-events on
 
 # Setting
+# Set pane line numbers
+set-option -g history-limit 6000
 
 # try clipboard
 set-option -g set-clipboard on

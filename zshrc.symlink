@@ -9,6 +9,8 @@ export PATH=$PATH:/usr/local/go/bin
 
 # for openssl "libssl.so.1.1"
 export LD_LIBRARY_PATH="/usr/local/lib64:$LD_LIBRARY_PATH"
+export OPENSSL_INCLUDE_DIR="/usr/local/include/openssl"
+export OPENSSL_LIB_DIR="/usr/local/lib64"
 
 # for the ML
 # export PATH="$PATH:/usr/local/smlnj/bin"
@@ -21,7 +23,7 @@ eval "$(jenv init -)"
 #export PATH="$PATH:/Library/TeX/texbin/"
 
 # Rustup
-#export PATH="$HOME/.cargo/bin/:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # for pgenv
 # export PATH=$PATH:~/Github/pgenv/pgsql/bin
@@ -45,8 +47,8 @@ export GPG_TTY=$(tty)
 
 
 # Editor
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='vim -u NONE'
+export VISUAL='vim -u NONE'
 
 # color for "ls"
 export CLICOLOR=1
@@ -178,7 +180,7 @@ alias lsn='nnn -dea'
 #export NNN_PLUG
 export NNN_FIFO=/tmp/nnn.fifo
 export NNN_PLUG='e:!vim -u NONE $nnn*;s:-!sudo -E vim -u NONE $nnn*;p:preview-tui;o:fzz;b:bookmarks'
-export NNN_BMS='d:~/Documents;D:~/Downloads;s:/;h:~/'
+export NNN_BMS='d:~/Documents;D:~/Downloads;s:/;h:~/;s:~/Doc'
 [ -f ~/.config/nnn/quitcd.bash_zsh ] && source ~/.config/nnn/quitcd.bash_zsh
 
 bindkey -v
@@ -217,8 +219,23 @@ eval "$(pyenv virtualenv-init -)"
 fcat() { cat $@ | sed 's/'`echo "\001"`'/|/g' }
 orderapp() { source ~/.orderapp.sh }
 hkbbg() { xvnc4viewer 192.168.150.180 -passwd ~/.vnc/passwd }
+newld5() { xvnc4viewer 192.168.50.180 -passwd ~/.vnc/passwd }
 newld() { xvnc4viewer 192.168.50.180 }
-oldbbg() { xvnc4viewer 192.168.124.180 -passwd ~/.vnc/passwd }
-newbbg() { xvnc4viewer 192.168.124.181 -passwd ~/.vnc/passwd }
+oldbbg() { xvnc4viewer 192.168.125.180 -passwd ~/.vnc/passwd }
+newbbg() { xvnc4viewer 192.168.125.181 -passwd ~/.vnc/passwd }
 ips() { bat /etc/hosts }
 
+# Docker command alias
+alias shellcheck='docker run --rm -v "$PWD:/mnt" koalaman/shellcheck:stable'
+#alias mmd='docker run -it -v "$(PWD):/data" -u root minlag/mermaid-cli -i /data/$1.md -o /data/$1.mermaid.md'
+
+# Mermaid JS command
+mermaid() {
+	docker run -it -v "$PWD:/data" -u root minlag/mermaid-cli -i /data/$1.md -o /data/$1.mermaid.md;
+}
+
+
+# >>>> Vagrant command completion (start)
+fpath=(/opt/vagrant/embedded/gems/2.3.1/gems/vagrant-2.3.1/contrib/zsh $fpath)
+compinit
+# <<<<  Vagrant command completion (end)
