@@ -243,13 +243,15 @@ eval "$(pyenv virtualenv-init -)"
 
 
 fcat() { cat $@ | sed 's/'`echo "\001"`'/|/g' }
-orderapp() { source ~/.orderapp.sh }
+orderapp() { source ~/scripts/orderapp.sh }
+sendorders() { source ~/scripts/ordercmd.sh $1 $2}
 hkbbg() { xvnc4viewer 192.168.150.180 -passwd ~/.vnc/passwd }
 newld5() { xvnc4viewer 192.168.50.180 -passwd ~/.vnc/passwd }
 newld() { xvnc4viewer 192.168.50.180 }
 oldbbg() { xvnc4viewer 192.168.125.180 -passwd ~/.vnc/passwd }
 newbbg() { xvnc4viewer 192.168.125.181 -passwd ~/.vnc/passwd }
 ips() { bat /etc/hosts }
+config_ssh_hosts() { nvim $HOME/.ssh/config }
 
 # Docker command alias
 alias shellcheck='docker run --rm -v "$PWD:/mnt" koalaman/shellcheck:stable'
@@ -265,3 +267,26 @@ mermaid() {
 fpath=(/opt/vagrant/embedded/gems/2.3.1/gems/vagrant-2.3.1/contrib/zsh $fpath)
 compinit
 # <<<<  Vagrant command completion (end)
+
+fzf-man-widget() {
+  batman="man {1} | col -bx | bat --language=man --plain --color always --theme=\"Monokai Extended\""
+   man -k . | sort \
+   | awk -v cyan=$(tput setaf 6) -v blue=$(tput setaf 4) -v res=$(tput sgr0) -v bld=$(tput bold) '{ $1=cyan bld $1; $2=res blue;} 1' \
+   | fzf  \
+      -q "$1" \
+      --ansi \
+      --tiebreak=begin \
+      --prompt=' Man > '  \
+      --preview-window '50%,rounded,<50(up,85%,border-bottom)' \
+      --preview "${batman}" \
+      --bind "ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up,up:preview-up,down:preview-down" \
+      --bind "enter:execute(man {1})" \
+      --bind "alt-c:+change-preview(cht.sh {1})+change-prompt( Cht.sh > )" \
+      --bind "alt-f:+change-preview(cheat -rsc {1})+change-prompt(✓ Cheat > )" \
+      --bind "alt-m:+change-preview(${batman})+change-prompt( Man > )" \
+      --bind "alt-t:+change-preview(tldr {1})+change-prompt( TLDR > )"
+  zle reset-prompt
+}
+# `Ctrl-H` keybinding to launch the widget (this widget works only on zsh, don't know how to do it on bash and fish (additionaly pressing`ctrl-backspace` will trigger the widget to be executed too because both share the same keycode)
+bindkey '^y' fzf-man-widget
+zle -N fzf-man-widget

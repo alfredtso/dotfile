@@ -31,6 +31,8 @@ return require('packer').startup(function(use)
 
   -- Git
   use ('tpope/vim-fugitive')
+  use ('christoomey/vim-tmux-navigator')
+  use ('nvim-tree/nvim-tree.lua')
 
   -- LSP
   use {
