@@ -94,6 +94,11 @@ _G.packer_plugins = {
     path = "/home/alfred/.local/share/nvim/site/pack/packer/start/lsp-zero.nvim",
     url = "https://github.com/VonHeikemen/lsp-zero.nvim"
   },
+  ["markdown-preview.nvim"] = {
+    loaded = true,
+    path = "/home/alfred/.local/share/nvim/site/pack/packer/start/markdown-preview.nvim",
+    url = "https://github.com/iamcco/markdown-preview.nvim"
+  },
   ["mason-lspconfig.nvim"] = {
     loaded = true,
     path = "/home/alfred/.local/share/nvim/site/pack/packer/start/mason-lspconfig.nvim",
@@ -116,7 +121,7 @@ _G.packer_plugins = {
   },
   ["nvim-tree.lua"] = {
     loaded = true,
-    path = "/home/alfredtso/.local/share/nvim/site/pack/packer/start/nvim-tree.lua",
+    path = "/home/alfred/.local/share/nvim/site/pack/packer/start/nvim-tree.lua",
     url = "https://github.com/nvim-tree/nvim-tree.lua"
   },
   ["nvim-treesitter"] = {

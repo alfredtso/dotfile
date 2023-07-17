@@ -47,8 +47,10 @@ export GPG_TTY=$(tty)
 
 
 # Editor
-export EDITOR='vim -u NONE'
-export VISUAL='vim -u NONE'
+#export EDITOR='vim -u NONE'
+#export VISUAL='vim -u NONE'
+export EDITOR='nvim'
+export VISUAL='nvim'
 
 # color for "ls"
 export CLICOLOR=1
