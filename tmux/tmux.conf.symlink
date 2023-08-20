@@ -29,6 +29,7 @@ set -g mouse on
 set -g set-titles on
 set -g set-titles-string "#T - #W"
 #set -g automatic-rename on
+set -g status-right '#(cat /etc/hostname) | #{battery_status_bg} Batt: #{battey_icon} #{battery_percentage} #{battery_remain} | %a %h-%d %H:%M '
 
 # Keybindings
 
@@ -38,32 +39,53 @@ set -g prefix C-a
 bind C-a send-prefix
 
 # reload
-bind R source-file '/home/alfredtso/.tmux.conf'; display "Reloaded config" 
+bind R source-file '/home/alfred/.tmux.conf'; display "Reloaded config" 
 
 # Split window
 #bind | split-window -h -c "#{pane_current_path}"
 #bind - split-window -v -c "#{pane_current_path}"
 
 # pane movement
-bind h select-pane -L
-bind j select-pane -D
-bind k select-pane -U
-bind l select-pane -R
+#bind h select-pane -L
+#bind j select-pane -D
+#bind k select-pane -U
+#bind l select-pane -R
 
 # bind y
 # bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 
 bind-key -T copy-mode-vi v send-keys -X begin-selection
 
+# Prefix bindkey
+bind-key -r  '^' last-window
+
 
 # Plug-in
-set -g @plugin 'egel/tmux-gruvbox'
-set -g @plugin 'tmux-plugins/tmux-urlview'
+
+## Theme
+#set -g @plugin 'egel/tmux-gruvbox'
+set -g @plugin 'dracula/tmux'
+
+## Others
+#set -g @plugin 'tmux-plugins/tmux-urlview'
 set -g @plugin 'christoomey/vim-tmux-navigator'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-battery'
 
-set -g @urlview-key 'u'
+# Dracula
+set -g @dracula-plugins "battery cpu-usage ram-usage time network network-ping"
+set -g @dracula-show-powerline true
+set -g @dracula-show-left-sep 
+
+# tmux-oepn
+set -g @open-S 'https://www.duckduckgo.com/?q='
+set -g @open-G 'https://www.goole.com/?q='
+
+# tmux-resurrect
+set -g @resurrect-capture-pan-contents 'on'
+
+#set -g @urlview-key 'u'
 set -g @continuum-restore 'on'
 run '~/.tmux/plugins/tpm/tpm'
