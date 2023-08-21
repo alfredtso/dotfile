@@ -5,12 +5,6 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
-  use {
-	  'nvim-telescope/telescope.nvim', tag = '0.1.1',
-	-- or                            , branch = '0.1.x',
-	  requires = { {'nvim-lua/plenary.nvim'} }
-  }
-
   use({ 
 	  'rose-pine/neovim', as = 'rose-pine',
 	  config = function()
@@ -19,14 +13,37 @@ return require('packer').startup(function(use)
 
   })
 
+  -- Preview
+  use({
+    "iamcco/markdown-preview.nvim",
+    run = function() vim.fn["mkdp#util#install"]() end,
+})
+
+  use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
+  
+
+  -- Treesitter
   use ({'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'})
   use ('nvim-treesitter/playground')
+
+  -- Navigation
   use ('theprimeagen/harpoon')
+  use {
+	  'nvim-telescope/telescope.nvim', tag = '0.1.1',
+	-- or                            , branch = '0.1.x',
+	  requires = { {'nvim-lua/plenary.nvim'} }
+  }
+  use ('christoomey/vim-tmux-navigator')
+
+  -- Editing
   use ('mbbill/undotree')
+
+  -- Git
   use ('tpope/vim-fugitive')
   use ('christoomey/vim-tmux-navigator')
   use ('nvim-tree/nvim-tree.lua')
 
+  -- LSP
   use {
   'VonHeikemen/lsp-zero.nvim',
   branch = 'v2.x',
