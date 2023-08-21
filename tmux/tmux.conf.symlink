@@ -40,7 +40,7 @@ set -g prefix C-a
 bind C-a send-prefix
 
 # reload
-bind R source-file '/home/alfred/.tmux.conf'; display "Reloaded config" 
+bind R source-file $HOME'/.tmux.conf'; display "Reloaded config" 
 
 # Split window
 #bind | split-window -h -c "#{pane_current_path}"
@@ -76,13 +76,13 @@ set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'tmux-plugins/tmux-battery'
 
 # Dracula
-set -g @dracula-plugins "battery cpu-usage ram-usage time network network-ping"
+set -g @dracula-plugins " git cpu-usage ram-usage gpu-usage time network network-ping"
 set -g @dracula-show-powerline true
 set -g @dracula-show-left-sep 
 
 # tmux-oepn
 set -g @open-S 'https://www.duckduckgo.com/?q='
-set -g @open-G 'https://www.goole.com/?q='
+set -g @open-G 'https://www.google.com/?q='
 
 # tmux-resurrect
 set -g @resurrect-capture-pan-contents 'on'

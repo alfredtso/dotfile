@@ -161,7 +161,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 #
 # Example aliases
 alias cht='cht.sh'
-#alias nvim='~/Downloads/nvim.appimage'
+alias nvim='~/Downloads/nvim.appimage'
 alias datagrip='nohup ~/.local/DataGrip-2021.3.3/bin/datagrip.sh >/dev/null 2>&1'
 alias rga='~/.cargo/bin/rga'
 alias aws=/usr/local/bin/aws
